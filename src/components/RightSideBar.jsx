@@ -1,22 +1,35 @@
 "use client"
 
+import { useGlobalContext } from '@/Context/ContextProvider';
 import { fetchUser, logoutUser } from '@/Redux/Slices/User.slice.js';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { FaHome, FaCompass, FaRss, FaBell, FaBookmark, FaCog, FaComments } from 'react-icons/fa';
 import { IoLogOutSharp } from "react-icons/io5";
 import { useDispatch, useSelector } from 'react-redux';
-
+import { toast } from "react-toastify";
+// import { cookies } from 'next/headers'
 
 const listClasses = "mb-2 px-4 py-1 rounded flex items-center cursor-pointer hover:bg-lightbg dark:hover:bg-darkbg";
 const listTextClass = "transition-colors duration-300 text-2xl dark:text-light-text text-dark-text"
 
 function RightSideBar() {
+    const { push } = useRouter();
     const { User } = useSelector((state) => ({ ...state.User }))
     const dispatch = useDispatch()
+    const { showAuth } = useGlobalContext()
 
     const logouthandle = async () => {
-        await dispatch(logoutUser())
-        await dispatch(fetchUser())
+        try {
+            await dispatch(logoutUser())
+            toast.success(`Logout Successful`, {
+                position: "top-right"
+            })
+            push('/')
+            await dispatch(fetchUser())
+        } catch (error) {
+            return
+        }
     }
 
     return (
@@ -51,7 +64,7 @@ function RightSideBar() {
                     <span className={`${listTextClass}`}>Setting</span>
                 </li>
                 {
-                    User ? (
+                    showAuth ? (
                         <li className={`${listClasses}`} onClick={logouthandle}>
                             <IoLogOutSharp className="mr-3 text-2xl" />
                             <span className={`${listTextClass}`}>Logout</span>

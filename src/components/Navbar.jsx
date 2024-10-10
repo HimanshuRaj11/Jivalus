@@ -15,7 +15,7 @@ import { useGlobalContext } from '@/Context/ContextProvider';
 import RegisterForm from './Register';
 const Navbar = () => {
 
-    const { createPostbtn, setCreatePostBtn, Loginbtn, setLoginBtn, Registerbtn } = useGlobalContext()
+    const { showAuth, setShowAuth, createPostbtn, setCreatePostBtn, Loginbtn, setLoginBtn, Registerbtn, setRegisterBtn } = useGlobalContext()
 
     const dispatch = useDispatch();
 
@@ -24,6 +24,13 @@ const Navbar = () => {
     if (typeof window !== "undefined") {
         document.body.style.overflow = createPostbtn || Loginbtn || Registerbtn ? "hidden" : "auto";
     }
+    useEffect(() => {
+        if (User?.username) {
+            setShowAuth(true)
+        } else {
+            setShowAuth(false)
+        }
+    }, [User])
     useEffect(() => {
         dispatch(fetchUser())
     }, [])
@@ -49,18 +56,17 @@ const Navbar = () => {
 
                         <div className="hidden md:flex md:items-center md:space-x-4 ml-5">
                             {
-                                User ? (
+                                showAuth ? (
                                     <div className="flex justify-around w-32 ">
-
                                         <span onClick={() => (setCreatePostBtn(true))} className=" dark:text-light-text text-dark-text cursor-pointer hover:text-gray-800 flex items-center space-x-1">
                                             <FiPlusCircle className="size-8" />
                                         </span>
-                                        <Link href="/profile" className=" dark:text-light-text text-dark-text hover:text-gray-800 flex items-center space-x-1">
+                                        <Link href={`${User?.username}`} className=" dark:text-light-text text-dark-text hover:text-gray-800 flex items-center space-x-1">
                                             <FaUserCircle className="size-8" />
                                         </Link>
                                     </div>
                                 ) : (
-                                    <span onClick={() => (setLoginBtn(true))} className="dark:text-light-text text-dark-text hover:text-gray-800 flex items-center space-x-1"><BiLogInCircle className="size-8" /></span>
+                                    <span onClick={() => (setLoginBtn(!Loginbtn), setRegisterBtn(false))} className="cursor-pointer dark:text-light-text text-dark-text hover:text-gray-800 flex items-center space-x-1"><BiLogInCircle className="size-8" /></span>
                                 )
                             }
 
@@ -73,7 +79,7 @@ const Navbar = () => {
                 </div >
 
                 {/* Mobile menu, show/hide based on menu state. */}
-                < div className="md:hidden" id="mobile-menu" >
+                < div className="hidden" id="mobile-menu" >
                     <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                         <a href="#" className="text-gray-600 hover:text-gray-800 flex items-center space-x-1">
                             <FaHome className="size-8" />
@@ -102,6 +108,8 @@ const Navbar = () => {
                         />
                     </div>
                 </div >
+
+
             </nav >
             {
                 createPostbtn ? <CreatePost /> : ""
@@ -112,9 +120,7 @@ const Navbar = () => {
             {
                 Registerbtn ? <RegisterForm /> : ""
             }
-            {
-                loading ? <PageLoader /> : ""
-            }
+
         </>
 
     );

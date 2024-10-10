@@ -2,11 +2,16 @@
 import connectDB from "@/lib/db";
 import User from "@/lib/models/user.model.js";
 import bcrypt from "bcryptjs/dist/bcrypt";
+import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
 export async function POST(request) {
     try {
-        const { username, email, firstName, lastName, password } = await request.json();
+        const { registerData } = await request.json();
+        console.log(registerData);
+
+        const { username, email, firstName, lastName, password } = registerData
         await connectDB()
 
         const user = await User.findOne({ email })
@@ -18,15 +23,28 @@ export async function POST(request) {
         // create user
         const salt = 10;
         const hashPassword = await bcrypt.hashSync(password, salt);
-        await User.create({ username, email, firstName, lastName, password: hashPassword }).then((res) => {
-            return NextResponse.json({ message: "User Created", res }, { status: 201 })
-        })
+        const newUser = await User.create({ username, email, firstName, lastName, password: hashPassword })
+        console.log(newUser);
+
+
+        const tokenData = {
+            id: newUser._id,
+            username: newUser.username,
+            email: newUser.email
+        }
+        //create token
+        const token = await jwt.sign(tokenData, process.env.TOKEN_SECRET)
+        console.log(token);
+
+        cookies().set("Jivalus_auth_token", token, { httpOnly: true })
 
         //send verification email
         // await sendEmail({ email, emailType: "VERIFY", userId: savedUser._id })
 
-        return NextResponse.json({ message: "User Signed In" })
+        return NextResponse.json({ message: `Hii! ${firstName}, Wellcome to JVALUS ` })
     } catch (error) {
+        console.log(error);
+
         return NextResponse.json({ message: "Internal server error", error })
     }
 }

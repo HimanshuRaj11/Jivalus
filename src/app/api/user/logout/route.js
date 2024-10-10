@@ -1,21 +1,12 @@
 import { NextResponse } from "next/server";
+import { cookies } from 'next/headers'
 
-
-export async function GET() {
+export async function GET(response) {
     try {
-        const response = NextResponse.json(
-            {
-                message: "Logout successful",
-                success: true,
-            }
-        )
-        response.cookies.set("Jivalus_auth_token", "",
-            {
-                httpOnly: true, expires: new Date(0)
-            });
-        return response;
+        await cookies().delete("Jivalus_auth_token");
+        return NextResponse.json({ message: "logout Success", success: true }, { status: 200 });
     } catch (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        return NextResponse.json({ error }, { status: 500 });
     }
 
 }

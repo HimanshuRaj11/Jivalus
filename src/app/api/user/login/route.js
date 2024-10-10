@@ -38,7 +38,6 @@ export async function POST(request, response) {
         }
         //create token
         const token = await jwt.sign(tokenData, process.env.TOKEN_SECRET)
-        console.log(token);
 
 
 

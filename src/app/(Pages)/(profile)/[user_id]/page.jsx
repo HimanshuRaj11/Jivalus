@@ -1,11 +1,15 @@
+
+"use client"
 import { Button } from '@/components/ui/button'
 import React from 'react'
 import { IoSettings } from "react-icons/io5";
 import Footer from './footer';
+import Link from 'next/link';
+import { useSelector } from 'react-redux';
 const bannerImg = "https://t3.ftcdn.net/jpg/05/35/35/38/360_F_535353834_fAKyu7nTpbpNux5XdR5T63OUJ6gDOHlD.jpg"
 const personSvg = "https://cdn.pixabay.com/photo/2022/06/05/07/04/person-7243410_1280.png"
-
 function page() {
+    const { User, loading } = useSelector((state) => ({ ...state.User }))
     const posts = [
         {
             image: "https://via.placeholder.com/150",
@@ -88,7 +92,7 @@ function page() {
                         <div className="flex flex-col justify-around items-center w-[56%] ">
 
                             <div className="flex justify-around w-full mx-4 items-center">
-                                <Button className="font-semibold">Edit Profile</Button>
+                                <Link href={`${User.username}/edit`} className="font-semibold">Edit Profile</Link>
                                 <Button className="font-semibold">Insights</Button>
                                 <span className="font-semibold"><IoSettings className="size-9 cursor-pointer text-dark-text dark:text-light-text " /></span>
                             </div>

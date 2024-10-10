@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -20,6 +21,7 @@ function Login() {
     username: "",
     password: "",
   });
+  const { username, password } = loginData;
   const handleInput = (e) => {
     const { name, value } = e.target;
     setLoginData((preVal) => {
@@ -28,26 +30,35 @@ function Login() {
   };
 
   const [error, setError] = useState(false)
-  const [message, setMessage] = useState("")
+  const [message, setMessage] = useState(null)
 
   const handleSubmit = async (e) => {
-    const { data } = await axios.post("http://localhost:3000/api/user/login", { loginData }, { withCredentials: true });
-    console.log(data);
-    setError(data.error)
-    setMessage(data.message)
-    if (data.success) {
-      toast.success(`${data.message}`, {
-        position: "top-right"
-      });
-      dispatch(fetchUser())
-      push('/')
-      setLoginBtn(false)
+    try {
+      await axios.post("http://localhost:3000/api/user/login", { loginData }, { withCredentials: true })
+        .then(async ({ data, status }) => {
+          if (data.success) {
+            toast.success(`${data.message}`, {
+              position: "top-right"
+            });
+            await dispatch(fetchUser())
+            push('/')
+            setLoginBtn(false)
+          }
+          setLoginData({
+            username: "",
+            password: "",
+          });
+          setMessage(null)
+          setError(false)
 
+        }).catch(({ response: { data }, status }) => {
+          setMessage("**" + data.message)
+          setError(data.error)
+        })
+    } catch (error) {
+      return
     }
-    setLoginData({
-      username: "",
-      password: "",
-    });
+
   };
 
   return (
@@ -126,9 +137,8 @@ function Login() {
 
           <p className="mt-10 text-center text-sm text-gray-500">
             Not have an account?
-            <span onClick={() => (setRegisterBtn(true), setLoginBtn(false), (console.log("clicked")))}
-              className="cursor-pointer font-semibold leading-6 text-indigo-600 hover:text-indigo-500 mx-2"
-            >
+            <span onClick={() => (setRegisterBtn(true), setLoginBtn(false))}
+              className="cursor-pointer font-semibold leading-6 text-indigo-600 hover:text-indigo-500 mx-2">
               Create an Account
             </span>
           </p>

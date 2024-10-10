@@ -1,12 +1,14 @@
+"use client"
 // components/LeftSideBar.js
 
 import React from 'react';
 import { Button } from './ui/button';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
+import { useGlobalContext } from '@/Context/ContextProvider';
 const bannerImg = "https://t3.ftcdn.net/jpg/05/35/35/38/360_F_535353834_fAKyu7nTpbpNux5XdR5T63OUJ6gDOHlD.jpg"
 const personSvg = "https://cdn.pixabay.com/photo/2022/06/05/07/04/person-7243410_1280.png"
-
+const addvertisementImg = "https://indianmediastudies.com/wp-content/uploads/2023/11/what-is-advertising-copy.jpeg.webp"
 
 const scrollBarStyle = `[&::-webkit-scrollbar]:w-2
   [&::-webkit-scrollbar-track]:rounded-full
@@ -18,47 +20,58 @@ const scrollBarStyle = `[&::-webkit-scrollbar]:w-2
 
 const listStyle = "flex items-center justify-between bg-lightbg rounded-lg dark:bg-darkbg p-3 my-2"
 const LeftSideBar = () => {
+    const { showAuth } = useGlobalContext()
     const { User, loading } = useSelector((state) => ({ ...state.User }))
     const UserFullName = User?.firstName + " " + User?.lastName
 
     return (
-        <div className="hidden lg:flex flex-col fixed rounded-lg left-0 top-16 h-full w-[22%] overflow-y-auto">
+        <div className="hidden lg:flex m-4 flex-col fixed rounded-lg left-0 top-[3.5rem] h-full w-[22%] overflow-y-auto">
             {/* User Profile Card */}
             <div className="dark-shadow p-4 mx-4 my-1 border-b h-auto bg-light-component rounded-lg dark:bg-dark-component">
-                <div className="banner h-auto">
-                    <img src={`${bannerImg}`} alt="" className="w-full rounded-sm object-fill h-20" />
-                </div>
-                <div className="flex items-center justify-center space-x-4 ">
-                    <img
-                        src={`${personSvg}`}
-                        alt="User Avatar"
-                        className="size-16 rounded-full relative top-[-34px]"
-                    />
-                </div>
-                <div className="flex justify-center -mt-8 flex-col items-center mb-2" >
-                    <h2 className="text-lg font-semibold">{UserFullName} </h2>
-                    <p className="text-md text-gray-400">@{User?.username}</p>
-                </div>
-                <div className="line-h bg-darkbg dark:bg-lightbg w-full h-[1px]"></div>
-                <div className="flex justify-around items-center">
-                    <div className="flex flex-col p-2 justify-center items-center">
-                        <h2 className="text-lg font-semibold items-center" >1454</h2>
-                        <h2 className="text-md text-gray-400">Followers</h2>
-                    </div>
+                {
+                    showAuth ? (
+                        <div>
+                            <div className="banner h-auto">
+                                <img src={`${bannerImg}`} alt="" className="w-full rounded-sm object-fill h-20" />
+                            </div>
+                            <div className="flex items-center justify-center space-x-4 ">
+                                <img
+                                    src={`${personSvg}`}
+                                    alt="User Avatar"
+                                    className="size-16 rounded-full relative top-[-34px]"
+                                />
+                            </div>
+                            <div className="flex justify-center -mt-8 flex-col items-center mb-2" >
+                                <h2 className="text-lg font-semibold">{UserFullName} </h2>
+                                <p className="text-md text-gray-400">@{User?.username}</p>
+                            </div>
+                            <div className="line-h bg-darkbg dark:bg-lightbg w-full h-[1px]"></div>
+                            <div className="flex justify-around items-center">
+                                <div className="flex flex-col p-2 justify-center items-center">
+                                    <h2 className="text-lg font-semibold items-center" >1454</h2>
+                                    <h2 className="text-md text-gray-400">Followers</h2>
+                                </div>
 
-                    <div className="v-line h-8 w-[1px]  bg-darkbg dark:bg-lightbg"></div>
+                                <div className="v-line h-8 w-[1px]  bg-darkbg dark:bg-lightbg"></div>
 
-                    <div className="flex flex-col p-2 justify-center items-center">
-                        <h2 className="text-lg font-semibold items-center" >1454</h2>
-                        <h2 className="text-md text-gray-400">Followings</h2>
-                    </div>
-                </div>
-                <div className="line-h bg-darkbg dark:bg-lightbg w-full h-[1px]"></div>
-                <div className="btn flex justify-center mt-2">
-                    <Link href="/profile">
-                        <Button varient="outline" className="text-lg dark:text-white text-black font-semibold p-2 bg-blue-500 hover:bg-blue-600">My Profile</Button>
-                    </Link>
-                </div>
+                                <div className="flex flex-col p-2 justify-center items-center">
+                                    <h2 className="text-lg font-semibold items-center" >1454</h2>
+                                    <h2 className="text-md text-gray-400">Followings</h2>
+                                </div>
+                            </div>
+                            <div className="line-h bg-darkbg dark:bg-lightbg w-full h-[1px]"></div>
+                            <div className="btn flex justify-center mt-2">
+                                <Link href={`${User?.username}`}>
+                                    <Button varient="outline" className="text-lg dark:text-white text-black font-semibold p-2 bg-blue-500 hover:bg-blue-600">My Profile</Button>
+                                </Link>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="w-[17rem] h-[17rem]">
+                            <img src={`${addvertisementImg}`} alt="" className="w-full h-full object-fill rounded-lg" />
+                        </div>
+                    )
+                }
             </div>
 
             {/* Suggestions Card */}

@@ -26,9 +26,8 @@ const userSchema = new Schema({
     },
     phone: {
         type: String,
-        required: false,
-        unique: true,
         trim: true,
+
     },
     countryCode: {
         type: String,
@@ -87,6 +86,8 @@ const userSchema = new Schema({
     verifyToken: String,
     verifyTokenExpiry: Date,
 }, { timestamps: true })
+
+
 
 const User = mongoose.models.User || mongoose.model("User", userSchema)
 
