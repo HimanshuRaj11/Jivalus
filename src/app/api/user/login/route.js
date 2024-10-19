@@ -12,7 +12,6 @@ export async function POST(request, response) {
 
         const reqBody = await request.json()
         const { username, password } = reqBody.loginData;
-        console.log(username);
 
         if (!username || !password) {
             return NextResponse.json({ message: "Please fill the credentials!", error: true })
@@ -43,7 +42,7 @@ export async function POST(request, response) {
 
         cookies().set("Jivalus_auth_token", token, { httpOnly: true })
 
-        return NextResponse.json({ message: "Login Successfull", token, success: true }, { status: 200 });
+        return NextResponse.json({ message: "Login Successfull", success: true }, { status: 200 });
 
     } catch (error) {
         return NextResponse.json({ message: error.message, error: true }, { status: 500 })

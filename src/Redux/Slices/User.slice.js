@@ -27,14 +27,13 @@ export const UserSlice = createSlice({
                 state.loading = false;
                 state.message = action.payload
                 state.error = true
-                state.User = {}
             })
             .addCase(logoutUser.pending, (state, action) => {
                 state.loading = true;
             })
             .addCase(logoutUser.fulfilled, (state, action) => {
                 state.loading = false;
-                state.User = {};
+
             })
             .addCase(logoutUser.rejected, (state, action) => {
                 state.loading = false;
@@ -50,7 +49,7 @@ const base_url = 'http://localhost:3000'
 export const fetchUser = createAsyncThunk("/user", async (_, { rejectWithValue }) => {
     try {
         const res = await axios.get(`${base_url}/api/user/`, { withCredentials: true })
-        const { user } = res.data
+
         return res.data
     } catch (error) {
         const { payload } = rejectWithValue(error?.response?.data)
@@ -60,9 +59,7 @@ export const fetchUser = createAsyncThunk("/user", async (_, { rejectWithValue }
 
 export const logoutUser = createAsyncThunk("/user/logout", async (_, { rejectWithValue }) => {
     try {
-        console.log("logout");
         const res = await axios.get(`${base_url}/api/user/logout/`, { withCredentials: true })
-        console.log(res);
         return res
     } catch (error) {
         return error.message

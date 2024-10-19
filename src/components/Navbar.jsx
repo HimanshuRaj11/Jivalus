@@ -13,6 +13,8 @@ import Login from './Login';
 import PageLoader from './pageLoader';
 import { useGlobalContext } from '@/Context/ContextProvider';
 import RegisterForm from './Register';
+import { userSuggested } from '@/Redux/Slices/SuggestedUser';
+import { GetPosts } from '@/Redux/Slices/PostsSlice';
 const Navbar = () => {
 
     const { showAuth, setShowAuth, createPostbtn, setCreatePostBtn, Loginbtn, setLoginBtn, Registerbtn, setRegisterBtn } = useGlobalContext()
@@ -20,6 +22,7 @@ const Navbar = () => {
     const dispatch = useDispatch();
 
     const { User, loading } = useSelector((state) => ({ ...state.User }))
+
 
     if (typeof window !== "undefined") {
         document.body.style.overflow = createPostbtn || Loginbtn || Registerbtn ? "hidden" : "auto";
@@ -33,6 +36,8 @@ const Navbar = () => {
     }, [User])
     useEffect(() => {
         dispatch(fetchUser())
+        dispatch(userSuggested())
+        dispatch(GetPosts())
     }, [])
     return (
         <>

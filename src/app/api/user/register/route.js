@@ -24,8 +24,6 @@ export async function POST(request) {
         const salt = 10;
         const hashPassword = await bcrypt.hashSync(password, salt);
         const newUser = await User.create({ username, email, firstName, lastName, password: hashPassword })
-        console.log(newUser);
-
 
         const tokenData = {
             id: newUser._id,
@@ -41,10 +39,8 @@ export async function POST(request) {
         //send verification email
         // await sendEmail({ email, emailType: "VERIFY", userId: savedUser._id })
 
-        return NextResponse.json({ message: `Hii! ${firstName}, Wellcome to JVALUS ` })
+        return NextResponse.json({ message: `Hii! ${firstName}, Wellcome to JIVALUS` })
     } catch (error) {
-        console.log(error);
-
         return NextResponse.json({ message: "Internal server error", error })
     }
 }

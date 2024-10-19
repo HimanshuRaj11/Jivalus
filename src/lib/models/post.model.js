@@ -7,13 +7,27 @@ const PostSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
-    post: [{
+    file: [{
         type: String,
         required: true
     }],
     discription: {
         type: String,
     },
+    location: {
+        type: String,
+    },
+    colabWith: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+    }],
+    tags: [{
+        type: String,
+    }],
+    tagPeople: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+    }],
     music: {
         type: String,
     },

@@ -29,6 +29,10 @@ const userSchema = new Schema({
         trim: true,
 
     },
+    bio: {
+        type: String,
+        trim: true,
+    },
     countryCode: {
         type: String,
         enum: Object.keys(countryCodes),

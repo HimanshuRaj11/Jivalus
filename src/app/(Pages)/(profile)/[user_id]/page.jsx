@@ -81,8 +81,8 @@ function page() {
 
                         <div className="flex flex-col w-[35%] mx-4 ">
                             <div className="" >
-                                <h1 className="text-2xl">username</h1>
-                                <h1 className="text-2xl">Name lastname</h1>
+                                <h1 className="text-2xl">@{User?.username}</h1>
+                                <h1 className="text-2xl">{User?.firstName} {User.lastName}</h1>
                             </div>
                             <div className="w-44 my-2 h-36 overflow-hidden">
                                 <p className="text-sm leading-5"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero explicabo perferendis commodi consequuntur alias sed itaque neque porro sunt rerum.</p>

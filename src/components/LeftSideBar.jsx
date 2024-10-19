@@ -1,11 +1,12 @@
 "use client"
 // components/LeftSideBar.js
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from './ui/button';
 import Link from 'next/link';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useGlobalContext } from '@/Context/ContextProvider';
+import { userSuggested } from '@/Redux/Slices/SuggestedUser';
 const bannerImg = "https://t3.ftcdn.net/jpg/05/35/35/38/360_F_535353834_fAKyu7nTpbpNux5XdR5T63OUJ6gDOHlD.jpg"
 const personSvg = "https://cdn.pixabay.com/photo/2022/06/05/07/04/person-7243410_1280.png"
 const addvertisementImg = "https://indianmediastudies.com/wp-content/uploads/2023/11/what-is-advertising-copy.jpeg.webp"
@@ -19,10 +20,15 @@ const scrollBarStyle = `[&::-webkit-scrollbar]:w-2
   dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500`
 
 const listStyle = "flex items-center justify-between bg-lightbg rounded-lg dark:bg-darkbg p-3 my-2"
+
+
 const LeftSideBar = () => {
     const { showAuth } = useGlobalContext()
     const { User, loading } = useSelector((state) => ({ ...state.User }))
     const UserFullName = User?.firstName + " " + User?.lastName
+    const { suggestedUsers } = useSelector((state) => ({ ...state.suggestedUsers }))
+    // console.log(suggestedUsers);
+
 
     return (
         <div className="hidden lg:flex m-4 flex-col fixed rounded-lg left-0 top-[3.5rem] h-full w-[22%] overflow-y-auto">
@@ -81,79 +87,27 @@ const LeftSideBar = () => {
                 <div className="line-h bg-darkbg dark:bg-lightbg w-full h-[1px]"></div>
 
                 <ul className={`space-y-3 pe-2 mt-2 overflow-y-scroll h-[16.8rem] ${scrollBarStyle}`}>
+                    {/* {
+                        suggestedUsers?.map((user, i) => {
+                            <li className={`${listStyle}`}>
+                                <div className="flex items-center space-x-3">
+                                    <img
+                                        src="https://via.placeholder.com/40"
+                                        alt="User Avatar"
+                                        className="w-10 h-10 rounded-full"
+                                    />
+                                    <div>
+                                        <h4 className="text-sm font-semibold">Jane Smith</h4>
+                                        <p className="text-xs text-gray-600">@janesmith</p>
+                                    </div>
+                                </div>
+                                <button className="text-blue-500 text-sm font-semibold">Follow</button>
+                            </li>
 
-                    <li className={`${listStyle}`}>
-                        <div className="flex items-center space-x-3">
-                            <img
-                                src="https://via.placeholder.com/40"
-                                alt="User Avatar"
-                                className="w-10 h-10 rounded-full"
-                            />
-                            <div>
-                                <h4 className="text-sm font-semibold">Jane Smith</h4>
-                                <p className="text-xs text-gray-600">@janesmith</p>
-                            </div>
-                        </div>
-                        <button className="text-blue-500 text-sm font-semibold">Follow</button>
-                    </li>
+                        })
+                    } */}
 
-                    <li className={`${listStyle}`}>
-                        <div className="flex items-center space-x-3">
-                            <img
-                                src="https://via.placeholder.com/40"
-                                alt="User Avatar"
-                                className="w-10 h-10 rounded-full"
-                            />
-                            <div>
-                                <h4 className="text-sm font-semibold">Jane Smith</h4>
-                                <p className="text-xs text-gray-600">@janesmith</p>
-                            </div>
-                        </div>
-                        <button className="text-blue-500 text-sm font-semibold">Follow</button>
-                    </li>
 
-                    <li className={`${listStyle}`}>
-                        <div className="flex items-center space-x-3">
-                            <img
-                                src="https://via.placeholder.com/40"
-                                alt="User Avatar"
-                                className="w-10 h-10 rounded-full"
-                            />
-                            <div>
-                                <h4 className="text-sm font-semibold">Jane Smith</h4>
-                                <p className="text-xs text-gray-600">@janesmith</p>
-                            </div>
-                        </div>
-                        <button className="text-blue-500 text-sm font-semibold">Follow</button>
-                    </li>
-                    <li className={`${listStyle}`}>
-                        <div className="flex items-center space-x-3">
-                            <img
-                                src="https://via.placeholder.com/40"
-                                alt="User Avatar"
-                                className="w-10 h-10 rounded-full"
-                            />
-                            <div>
-                                <h4 className="text-sm font-semibold">Jane Smith</h4>
-                                <p className="text-xs text-gray-600">@janesmith</p>
-                            </div>
-                        </div>
-                        <button className="text-blue-500 text-sm font-semibold">Follow</button>
-                    </li>
-                    <li className={`${listStyle}`}>
-                        <div className="flex items-center space-x-3">
-                            <img
-                                src="https://via.placeholder.com/40"
-                                alt="User Avatar"
-                                className="w-10 h-10 rounded-full"
-                            />
-                            <div>
-                                <h4 className="text-sm font-semibold">Jane Smith</h4>
-                                <p className="text-xs text-gray-600">@janesmith</p>
-                            </div>
-                        </div>
-                        <button className="text-blue-500 text-sm font-semibold">Follow</button>
-                    </li>
 
 
 

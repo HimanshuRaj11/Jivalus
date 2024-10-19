@@ -17,11 +17,11 @@ export default function Home() {
     comments: 45,
   };
 
+
+
   return (
     <Homelayout>
       <div className="min-h-screen w-full">
-        <PostCard {...post} />
-        <PostCard {...post} />
         <PostCard {...post} />
       </div>
     </Homelayout>

@@ -10,7 +10,6 @@ import { NextResponse } from "next/server";
 export async function POST(request, { params: { _id } }) {            // here _id is Id of Post
     try {
         const { comment } = await request.json()
-        await connectDB();
         const userId = await getDataFromToken(request);
         if (!userId) {
             return NextResponse.json({ message: "User Not found" }, { status: 404 })
