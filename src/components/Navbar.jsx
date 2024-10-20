@@ -34,6 +34,7 @@ const Navbar = () => {
             setShowAuth(false)
         }
     }, [User])
+
     useEffect(() => {
         dispatch(fetchUser())
         dispatch(userSuggested())

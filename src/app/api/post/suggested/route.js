@@ -1,3 +1,4 @@
+import Post from "@/lib/models/post.model";
 import { GetPost } from "@/lib/temp/getPosts";
 import { NextResponse } from "next/server";
 
@@ -12,9 +13,10 @@ export async function GET(params) {
                 Posts.push(postData)
             }
         }
-        return NextResponse.json({ Posts })
+
+        return NextResponse.json({ Posts, message: "Posts fetched", success: true }, { status: 200 })
 
     } catch (error) {
-        return NextResponse.json({ error })
+        return NextResponse.json({ error }, { status: 503 })
     }
 }

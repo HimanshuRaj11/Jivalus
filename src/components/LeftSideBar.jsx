@@ -26,8 +26,8 @@ const LeftSideBar = () => {
     const { showAuth } = useGlobalContext()
     const { User, loading } = useSelector((state) => ({ ...state.User }))
     const UserFullName = User?.firstName + " " + User?.lastName
-    const { suggestedUsers } = useSelector((state) => ({ ...state.suggestedUsers }))
-    // console.log(suggestedUsers);
+    const { suggestedUsers } = useSelector((state) => (state.suggestedUsers))
+    console.log(suggestedUsers);
 
 
     return (
@@ -87,31 +87,30 @@ const LeftSideBar = () => {
                 <div className="line-h bg-darkbg dark:bg-lightbg w-full h-[1px]"></div>
 
                 <ul className={`space-y-3 pe-2 mt-2 overflow-y-scroll h-[16.8rem] ${scrollBarStyle}`}>
-                    {/* {
-                        suggestedUsers?.map((user, i) => {
-                            <li className={`${listStyle}`}>
-                                <div className="flex items-center space-x-3">
-                                    <img
-                                        src="https://via.placeholder.com/40"
-                                        alt="User Avatar"
-                                        className="w-10 h-10 rounded-full"
-                                    />
-                                    <div>
-                                        <h4 className="text-sm font-semibold">Jane Smith</h4>
-                                        <p className="text-xs text-gray-600">@janesmith</p>
+                    {suggestedUsers && suggestedUsers.length > 0 ? (
+                        suggestedUsers.map((user, i) => {
+                            console.log(user);
+
+                            return (
+                                <li className={`${listStyle}`} key={i + 1}>
+                                    <div className="flex items-center space-x-3">
+                                        <img
+                                            src="https://via.placeholder.com/40"
+                                            alt="User Avatar"
+                                            className="w-10 h-10 rounded-full"
+                                        />
+                                        <div>
+                                            <h4 className="text-sm font-semibold">{user.firstName + " " + user.lastName}</h4>
+                                            <p className="text-xs text-gray-600">@{user.username}</p>
+                                        </div>
                                     </div>
-                                </div>
-                                <button className="text-blue-500 text-sm font-semibold">Follow</button>
-                            </li>
+                                    <button className="text-blue-500 text-sm font-semibold">Follow</button>
+                                </li>
+                            )
 
                         })
-                    } */}
+                    ) : ("")}
 
-
-
-
-
-                    {/* Add more suggestions as needed */}
                 </ul>
             </div>
         </div>

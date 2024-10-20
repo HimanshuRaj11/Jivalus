@@ -1,10 +1,10 @@
-import { createSlice, createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { createSelector } from "reselect"
 
-const base_url = 'http://localhost:3000/api'
 
 const initialState = {
-    Posts: {},
+    Posts: [],
     loading: false,
     error: false,
 
@@ -32,7 +32,9 @@ export const PostsSlice = createSlice({
     }
 })
 
-export const GetPosts = createAsyncThunk("posts", async (_, { rejectWithValue }) => {
+const base_url = 'http://localhost:3000/api'
+
+export const GetPosts = createAsyncThunk("/posts/fetch", async (_, { rejectWithValue }) => {
     try {
         const res = await axios.get(`${base_url}/post/suggested`)
         return res.data
@@ -41,5 +43,8 @@ export const GetPosts = createAsyncThunk("posts", async (_, { rejectWithValue })
         return payload
     }
 })
+
+
+
 
 export default PostsSlice.reducer;

@@ -16,7 +16,7 @@ export const GetPost = async ({ _id }) => {
             }
         }
 
-        const userDetails = await User.findById({ _id: user }).select("_id username firstname lastname profile");
+        const userDetails = await User.findById({ _id: user }).select("_id username firstName lastName profilePic");
 
         const postData = { post, userDetails, commentLength: comments.length, likes: likes.length, getComments };
 
