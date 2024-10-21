@@ -23,6 +23,7 @@ export function middleware(request) {
 export const config = {
     matcher: [
         // '/',
+        "/:username*/edit",
         '/profile',
         '/login',
         '/signup',

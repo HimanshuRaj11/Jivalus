@@ -8,6 +8,7 @@ export async function GET() {
     try {
         await connectDB();
         const userId = await getDataFromToken();
+        if (!userId) return
         const user = await User.findOne({ _id: userId }).select("-password");
         return NextResponse.json({ mesaaage: "User found", user, success: true }, { status: 200 })
     } catch (error) {

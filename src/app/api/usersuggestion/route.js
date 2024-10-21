@@ -9,6 +9,7 @@ export async function GET() {
     try {
 
         const suggestedUsers = await User.find({}).select("_id username firstName lastName profilePic")
+        if (!suggestedUsers) return
         return NextResponse.json({ message: "", suggestedUsers, success: true }, { status: 200 })
     } catch (error) {
         console.log(error);

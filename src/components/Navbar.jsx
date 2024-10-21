@@ -40,6 +40,9 @@ const Navbar = () => {
         dispatch(userSuggested())
         dispatch(GetPosts())
     }, [])
+    useEffect(() => {
+        dispatch(GetPosts())
+    }, [])
     return (
         <>
             <nav className="dark-shadow w-full rounded-lg sticky top-0 z-10 backdrop-blur bg-background/50 bg-light-component dark:bg-dark-component">

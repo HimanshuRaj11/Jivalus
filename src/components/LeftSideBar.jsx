@@ -10,7 +10,7 @@ import { userSuggested } from '@/Redux/Slices/SuggestedUser';
 const bannerImg = "https://t3.ftcdn.net/jpg/05/35/35/38/360_F_535353834_fAKyu7nTpbpNux5XdR5T63OUJ6gDOHlD.jpg"
 const personSvg = "https://cdn.pixabay.com/photo/2022/06/05/07/04/person-7243410_1280.png"
 const addvertisementImg = "https://indianmediastudies.com/wp-content/uploads/2023/11/what-is-advertising-copy.jpeg.webp"
-
+const profileSvg = 'https://www.svgrepo.com/show/327465/person-circle.svg'
 const scrollBarStyle = `[&::-webkit-scrollbar]:w-2
   [&::-webkit-scrollbar-track]:rounded-full
   [&::-webkit-scrollbar-track]:bg-gray-100
@@ -27,7 +27,6 @@ const LeftSideBar = () => {
     const { User, loading } = useSelector((state) => ({ ...state.User }))
     const UserFullName = User?.firstName + " " + User?.lastName
     const { suggestedUsers } = useSelector((state) => (state.suggestedUsers))
-    console.log(suggestedUsers);
 
 
     return (
@@ -89,13 +88,12 @@ const LeftSideBar = () => {
                 <ul className={`space-y-3 pe-2 mt-2 overflow-y-scroll h-[16.8rem] ${scrollBarStyle}`}>
                     {suggestedUsers && suggestedUsers.length > 0 ? (
                         suggestedUsers.map((user, i) => {
-                            console.log(user);
 
                             return (
                                 <li className={`${listStyle}`} key={i + 1}>
                                     <div className="flex items-center space-x-3">
                                         <img
-                                            src="https://via.placeholder.com/40"
+                                            src={user.profilePic ? user.profilePic : profileSvg}
                                             alt="User Avatar"
                                             className="w-10 h-10 rounded-full"
                                         />

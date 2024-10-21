@@ -14,7 +14,7 @@ const listClasses = "mb-2 px-4 py-1 rounded flex items-center cursor-pointer hov
 const listTextClass = "transition-colors duration-300 text-2xl dark:text-light-text text-dark-text"
 
 function RightSideBar() {
-    const { push } = useRouter();
+    const router = useRouter();
     const { User } = useSelector((state) => ({ ...state.User }))
     const dispatch = useDispatch()
     const { showAuth } = useGlobalContext()
@@ -22,10 +22,12 @@ function RightSideBar() {
     const logouthandle = async () => {
         try {
             await dispatch(logoutUser())
+            router.push({
+                pathname: '/',
+            })
             toast.success(`Logout Successful`, {
                 position: "top-right"
             })
-            push('/')
             await dispatch(fetchUser())
         } catch (error) {
             return
