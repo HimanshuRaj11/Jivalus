@@ -26,6 +26,9 @@ function page({ params: { username } }) {
 
     const Followings = userDetails?.followings
     const FollowingsLength = Followings?.length;
+    const isFollowing = Followings?.includes(userDetails._id)
+    console.log(isFollowing);
+
 
     const Posts = userDetails?.posts
     const PostsLength = Posts?.length;
@@ -81,7 +84,7 @@ function page({ params: { username } }) {
                                         <h1 className="text-2xl">@{userDetails?.username}</h1>
                                         <h1 className="text-2xl">{userDetails?.firstName} {userDetails?.lastName}</h1>
                                     </div>
-                                    <div className="w-44 my-2 h-36 overflow-hidden">
+                                    <div className="w-64 my-2 h-36 overflow-hidden">
                                         <p className="text-[16px] leading-6 text-gray-500"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero explicabo perferendis commodi consequuntur alias sed itaque neque porro sunt rerum.</p>
                                     </div>
                                 </div>
@@ -89,7 +92,13 @@ function page({ params: { username } }) {
                                 <div className="flex flex-col justify-around items-center w-[56%] ">
                                     {
                                         (username !== User.username) ? <>
-                                            <Button className="bg-blue-600 text-white font-semibold hover:text-blue-600" >Follow</Button>
+                                            {
+                                                !isFollowing ? <Button className="bg-blue-600 text-white font-semibold hover:text-blue-600" >Follow</Button>
+                                                    : <Button className="bg-blue-600 text-white font-semibold hover:text-blue-600" >Unfollow</Button>
+
+                                            }
+
+
                                         </> : (
                                             <div className="flex justify-around w-full mx-4 items-center">
                                                 <Link href={`${User?.username}/edit`} className="font-semibold">Edit Profile</Link>
@@ -112,6 +121,7 @@ function page({ params: { username } }) {
                                             <h2 className="text-lg font-semibold items-center" >{FollowersLength}</h2>
                                             <h2 className="text-md text-gray-400">Followers</h2>
                                         </div>
+
                                         <div className="v-line h-8 w-[1px]  bg-darkbg dark:bg-lightbg"></div>
 
                                         <div className="flex flex-col p-2 justify-center items-center">

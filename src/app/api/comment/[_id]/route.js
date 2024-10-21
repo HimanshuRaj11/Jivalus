@@ -9,7 +9,9 @@ import { NextResponse } from "next/server";
 
 export async function POST(request, { params: { _id } }) {            // here _id is Id of Post
     try {
+
         const { comment } = await request.json()
+        console.log(_id, comment);
         const userId = await getDataFromToken(request);
         if (!userId) {
             return NextResponse.json({ message: "User Not found" }, { status: 404 })

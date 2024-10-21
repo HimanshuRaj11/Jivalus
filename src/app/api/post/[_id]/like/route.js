@@ -17,9 +17,10 @@ export async function POST(request, { params: { _id } }) { // id of Post
             })
             like = false
         } else {
-            const postTolike = await Post.findOneAndUpdate({ _id }, {
-                $push: { likes: userId }
-            })
+            const postTolike = await Post.findOneAndUpdate({ _id },
+                { $push: { likes: userId } },
+                { returnDocument: 'after' }
+            )
             like = true
         }
 

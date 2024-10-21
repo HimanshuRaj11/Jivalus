@@ -4,13 +4,11 @@
 import { useGlobalContext } from '@/Context/ContextProvider';
 import axios from 'axios';
 import Link from 'next/link';
-import { comment } from 'postcss';
-// import { selectPosts } from '@/Redux/Slices/PostsSlice';
 import React, { useEffect, useState } from 'react';
 import { FaEllipsisH, FaHeart, FaComment, FaShare } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import PostCardSkeleton from './Skeleton/PostCard';
-
+import { BsSendFill } from "react-icons/bs";
 const profileSvg = 'https://www.svgrepo.com/show/327465/person-circle.svg'
 
 function PostCard() {
@@ -18,6 +16,8 @@ function PostCard() {
     const { User } = useSelector((state) => ({ ...state.User }))
     const { Posts } = useSelector((state) => state.Posts);
     const followings = User?.followings
+    const [CommentInput, setCommentInput] = useState(null)
+    const [comment, setComment] = useState("")
 
 
     const follow = async (_id) => {
@@ -30,34 +30,44 @@ function PostCard() {
             return error
         }
     }
+
     const like = async (_id) => {
         try {
             if (!User) {
                 setLoginBtn(true)
             }
-
             const res = await axios.post(`http://localhost:3000/api/post/${_id}/like`)
+        } catch (error) {
+            return error
+        }
+    }
+
+    const commentBtn = async (Post_id) => {
+        if (!User) {
+            setLoginBtn(true)
+        } else {
+            setCommentInput(Post_id)
+        }
+
+    }
+    const handleCommentInput = (e) => {
+        const { name, value } = e.target
+        setComment(value)
+    }
+    const postComment = async (_id) => {
+        try {
+            const res = await axios.post(`http://localhost:3000/api/comment/${_id}`, { comment })
             console.log(res);
 
+            setComment("")
+            setCommentInput(null)
         } catch (error) {
             console.log(error);
 
-            return error
         }
-    }
-    const comment = async ({ _id }) => {
-        try {
-            if (!User) {
-                setLoginBtn(true)
-            }
-            // check 
-            // await axios.post(`http://localhost:3000/api/post/${_id}/comment)
-        } catch (error) {
-            console.log(error);
-            return error
-        }
-    }
+        console.log(comment, _id);
 
+    }
 
     return (
 
@@ -69,7 +79,6 @@ function PostCard() {
                     const userDetails = post?.userDetails
                     const isFollowing = followings?.includes(userDetails._id) || (User?._id == userDetails?._id)
                     const isliked = PostDetail?.likes?.includes(User?._id)
-
 
                     return (
                         <div key={index + 1} className="dark-shadow mx-auto rounded-lg  bg-light-component  dark:bg-dark-component shadow-lg overflow-hidden mt-2 mb-4">
@@ -105,33 +114,40 @@ function PostCard() {
                                 })
                             }
 
-                            <div className="flex items-center justify-between px-4 py-2">
-                                <div className="flex items-center space-x-4">
+                            <div className="flex items-center w-full justify-between px-4 py-2">
+                                <div className="flex items-center w-full justify-between space-x-4">
                                     {
                                         isliked ? (
-                                            <button onClick={() => like(PostDetail?._id)} className="flex items-center cursor-pointer text-red-500">
-                                                <FaHeart className="mr-1" />
-                                                <span>{post?.likes}</span>
+                                            <button onClick={() => like(PostDetail?._id)} className="flex items-center cursor-pointer text-red-500 mx-2">
+                                                <FaHeart className="mr-1 size-8" />
+                                                <span className='text-2xl mx-2'>{post?.likes}</span>
                                             </button>
                                         ) : (
                                             <button onClick={() => like(PostDetail?._id)} className="flex items-center cursor-pointer text-gray-600 hover:text-red-500">
-                                                <FaHeart className="mr-1" />
-                                                <span>{post?.likes}</span>
+                                                <FaHeart className="mr-1 size-8" />
+                                                <span className='text-2xl mx-2'>{post?.likes}</span>
                                             </button>
                                         )
                                     }
-
-
-                                    <button onClick={comment} className="flex items-center text-gray-600 hover:text-blue-500">
-                                        <FaComment className="mr-1" />
-                                        <span>{post?.commentLength}</span>
-                                    </button>
-                                    <button className="flex items-center text-gray-600 hover:text-green-500">
+                                    <div className="">
+                                        <button onClick={() => commentBtn(PostDetail?._id)} className="flex items-center text-gray-600 hover:text-blue-500 mx-2 ">
+                                            <span className='text-2xl mx-2'>{post?.commentLength}</span>
+                                            <FaComment className="mr-1 size-8" />
+                                        </button>
+                                    </div>
+                                    {/* <button className="flex items-center text-gray-600 hover:text-green-500">
                                         <FaShare className="mr-1" />
                                         <span>Share</span>
-                                    </button>
+                                        </button> */}
                                 </div>
                             </div>
+                            {
+                                CommentInput == PostDetail?._id &&
+                                <div className="flex w-full flex-row justify-end items-center rounded-lg ">
+                                    <input onChange={handleCommentInput} className='w-96  p-2 my-2 rounded-lg mx-1' type="text" name='comment' value={comment} placeholder='What you think about the Post...' />
+                                    <BsSendFill onClick={() => postComment(PostDetail?._id)} className='size-7 text-blue-600  mr-4' />
+                                </div>
+                            }
                         </div>
                     )
                 })
@@ -144,7 +160,6 @@ function PostCard() {
             )}
 
         </div>
-
 
     );
 }
