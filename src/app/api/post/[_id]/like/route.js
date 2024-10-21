@@ -8,7 +8,7 @@ export async function POST(request, { params: { _id } }) { // id of Post
         const userId = await getDataFromToken();
         if (!userId) return
         const { post: { likes } } = await GetPost({ _id })
-        let like
+        let like = null
 
         const isLiked = likes.includes(userId)
         if (isLiked) {

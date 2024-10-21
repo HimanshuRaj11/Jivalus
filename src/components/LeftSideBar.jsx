@@ -28,6 +28,15 @@ const LeftSideBar = () => {
     const UserFullName = User?.firstName + " " + User?.lastName
     const { suggestedUsers } = useSelector((state) => (state.suggestedUsers))
 
+    const Followers = User?.followers
+    const FollowersLength = Followers?.length
+
+    const Followings = User?.followings
+    const FollowingsLength = Followings?.length;
+
+    const Posts = User?.posts
+    const PostsLength = Posts?.length;
+
 
     return (
         <div className="hidden lg:flex m-4 flex-col fixed rounded-lg left-0 top-[3.5rem] h-full w-[22%] overflow-y-auto">
@@ -53,14 +62,14 @@ const LeftSideBar = () => {
                             <div className="line-h bg-darkbg dark:bg-lightbg w-full h-[1px]"></div>
                             <div className="flex justify-around items-center">
                                 <div className="flex flex-col p-2 justify-center items-center">
-                                    <h2 className="text-lg font-semibold items-center" >1454</h2>
+                                    <h2 className="text-lg font-semibold items-center" >{FollowersLength}</h2>
                                     <h2 className="text-md text-gray-400">Followers</h2>
                                 </div>
 
                                 <div className="v-line h-8 w-[1px]  bg-darkbg dark:bg-lightbg"></div>
 
                                 <div className="flex flex-col p-2 justify-center items-center">
-                                    <h2 className="text-lg font-semibold items-center" >1454</h2>
+                                    <h2 className="text-lg font-semibold items-center" >{FollowingsLength}</h2>
                                     <h2 className="text-md text-gray-400">Followings</h2>
                                 </div>
                             </div>

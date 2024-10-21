@@ -3,11 +3,13 @@
 
 import { useGlobalContext } from '@/Context/ContextProvider';
 import axios from 'axios';
+import Link from 'next/link';
 import { comment } from 'postcss';
 // import { selectPosts } from '@/Redux/Slices/PostsSlice';
 import React, { useEffect, useState } from 'react';
 import { FaEllipsisH, FaHeart, FaComment, FaShare } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
+import PostCardSkeleton from './Skeleton/PostCard';
 
 const profileSvg = 'https://www.svgrepo.com/show/327465/person-circle.svg'
 
@@ -18,12 +20,12 @@ function PostCard() {
     const followings = User?.followings
 
 
-    const follow = async () => {
+    const follow = async (_id) => {
         try {
             if (!User) {
                 setLoginBtn(true)
             }
-            await axios.post("http://localhost:3000/api/user/follow")
+            await axios.post("http://localhost:3000/api/user/follow", { _id })
         } catch (error) {
             return error
         }
@@ -76,13 +78,13 @@ function PostCard() {
                                     <img className="w-10 h-10 rounded-full" src={userDetails?.profilePic ? userDetails?.profilePic : profileSvg} alt={""} />
                                     <div className="ml-3">
                                         <span className='flex flex-row '>
-                                            <p className="dark:text-light-text text-dark-text font-semibold">{userDetails?.firstName + " " + userDetails?.lastName}</p>
+                                            <Link href={`http://localhost:3000/${userDetails?.username}`} className="dark:text-light-text text-dark-text font-semibold">{userDetails?.firstName + " " + userDetails?.lastName}</Link>
                                             {
-                                                isFollowing ? "" : <span onClick={follow} className="mx-5 text-blue-600 font-semibold cursor-pointer">Follow</span>
+                                                isFollowing ? "" : <span onClick={() => follow(userDetails?._id)} className="mx-5 text-blue-600 font-semibold cursor-pointer">Follow</span>
                                             }
 
                                         </span>
-                                        <p className="text-gray-600 text-sm">@ {userDetails?.username}</p>
+                                        <Link href={`http://localhost:3000/${userDetails?.username}`} className="text-gray-600 text-sm">@ {userDetails?.username}</Link>
                                     </div>
                                 </div>
                                 <FaEllipsisH className="text-gray-600 cursor-pointer" />
@@ -134,8 +136,13 @@ function PostCard() {
                     )
                 })
             ) : (
-                <p>No posts available</p>
+                <>
+                    <PostCardSkeleton />
+                    <PostCardSkeleton />
+                    <PostCardSkeleton />
+                </>
             )}
+
         </div>
 
 

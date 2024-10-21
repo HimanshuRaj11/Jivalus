@@ -1,5 +1,5 @@
-
 "use client"
+
 import { Button } from '@/components/ui/button'
 import React, { useEffect, useState } from 'react'
 import { IoSettings } from "react-icons/io5";
@@ -7,100 +7,131 @@ import Footer from './footer';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import ProfilePageSkeleton from '@/components/Skeleton/ProfilePage';
+import { Skeleton } from '@/components/ui/skeleton';
 const bannerImg = "https://t3.ftcdn.net/jpg/05/35/35/38/360_F_535353834_fAKyu7nTpbpNux5XdR5T63OUJ6gDOHlD.jpg"
 const personSvg = "https://cdn.pixabay.com/photo/2022/06/05/07/04/person-7243410_1280.png"
-function page() {
+
+
+function page({ params: { username } }) {
+
     const { User, loading } = useSelector((state) => ({ ...state.User }))
+
+    const [userDetails, setUserdetails] = useState()
+
     const [posts, setPosts] = useState()
 
-    const Followers = User?.followers
+    const Followers = userDetails?.followers
     const FollowersLength = Followers?.length
 
-    const Followings = User?.followings
+    const Followings = userDetails?.followings
     const FollowingsLength = Followings?.length;
 
-    const Posts = User?.posts
+    const Posts = userDetails?.posts
     const PostsLength = Posts?.length;
+
+    const getUser = async () => {
+        try {
+            const { data: { user } } = await axios.get(`http://localhost:3000/api/user/${username}`)
+            setUserdetails(user);
+        } catch (error) {
+            return error
+        }
+    }
 
     const GetPosts = async () => {
         try {
-            const { data: { UsersPosts } } = await axios.get("http://localhost:3000/api/user/fetchPosts")
+            const { data: { UsersPosts } } = await axios.get(`http://localhost:3000/api/user/${username}/fetchPosts`)
             setPosts(UsersPosts)
+
         } catch (error) {
             return error
-
         }
     }
 
     useEffect(() => {
         GetPosts()
-    }, [User])
+        getUser()
+    }, [])
+
 
 
     return (
 
         <div className=" w-[75%]" >
             {/* Profile banner or details */}
+            {
+                userDetails ? (
+                    <div className="Profile-banner">
+                        <div className="img banner-rounder overflow-hidden">
+                            <img src={`${bannerImg}`} alt="" className="w-full h-72" />
+                        </div>
 
-            <div className="Profile-banner">
-                <div className="img banner-rounder overflow-hidden">
-                    <img src={`${bannerImg}`} alt="" className="w-full h-72" />
-                </div>
+                        <div className="profileDetails relative top-[-100px] flex">
 
-                <div className="profileDetails relative top-[-100px] flex">
+                            <img
+                                src={`${personSvg}`}
+                                alt="User Avatar"
+                                className="size-52 rounded-full "
+                            />
+                            <div className="details w-full h-52 flex flex-row relative top-[80px] pt-8 pl-10 ">
 
-                    <img
-                        src={`${personSvg}`}
-                        alt="User Avatar"
-                        className="size-52 rounded-full "
-                    />
-                    <div className="details w-full h-52 flex flex-row relative top-[80px] pt-8 pl-10 ">
+                                <div className="flex flex-col w-[35%] mx-4 ">
+                                    <div className="" >
+                                        <h1 className="text-2xl">@{userDetails?.username}</h1>
+                                        <h1 className="text-2xl">{userDetails?.firstName} {userDetails?.lastName}</h1>
+                                    </div>
+                                    <div className="w-44 my-2 h-36 overflow-hidden">
+                                        <p className="text-[16px] leading-6 text-gray-500"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero explicabo perferendis commodi consequuntur alias sed itaque neque porro sunt rerum.</p>
+                                    </div>
+                                </div>
 
-                        <div className="flex flex-col w-[35%] mx-4 ">
-                            <div className="" >
-                                <h1 className="text-2xl">@{User?.username}</h1>
-                                <h1 className="text-2xl">{User?.firstName} {User?.lastName}</h1>
-                            </div>
-                            <div className="w-44 my-2 h-36 overflow-hidden">
-                                <p className="text-[16px] leading-6 text-gray-500"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero explicabo perferendis commodi consequuntur alias sed itaque neque porro sunt rerum.</p>
+                                <div className="flex flex-col justify-around items-center w-[56%] ">
+                                    {
+                                        (username !== User.username) ? <>
+                                            <Button className="bg-blue-600 text-white font-semibold hover:text-blue-600" >Follow</Button>
+                                        </> : (
+                                            <div className="flex justify-around w-full mx-4 items-center">
+                                                <Link href={`${User?.username}/edit`} className="font-semibold">Edit Profile</Link>
+                                                <Button className="font-semibold">Insights</Button>
+                                                <span className="font-semibold"><IoSettings className="size-9 cursor-pointer text-dark-text dark:text-light-text " /></span>
+                                            </div>
+                                        )
+                                    }
+
+
+                                    <div className="flex justify-around w-full mx-4 items-center">
+                                        <div className="flex flex-col p-2 justify-center items-center">
+                                            <h2 className="text-lg font-semibold items-center" >{FollowingsLength}</h2>
+                                            <h2 className="text-md text-gray-400">Followings</h2>
+                                        </div>
+
+                                        <div className="v-line h-8 w-[1px]  bg-darkbg dark:bg-lightbg"></div>
+
+                                        <div className="flex flex-col p-2 justify-center items-center">
+                                            <h2 className="text-lg font-semibold items-center" >{FollowersLength}</h2>
+                                            <h2 className="text-md text-gray-400">Followers</h2>
+                                        </div>
+                                        <div className="v-line h-8 w-[1px]  bg-darkbg dark:bg-lightbg"></div>
+
+                                        <div className="flex flex-col p-2 justify-center items-center">
+                                            <h2 className="text-lg font-semibold items-center" >{PostsLength}</h2>
+                                            <h2 className="text-md text-gray-400">Posts</h2>
+                                        </div>
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div className="flex flex-col justify-around items-center w-[56%] ">
+                        <div className="line-h bg-darkbg dark:bg-lightbg w-full h-[1px]"></div>
 
-                            <div className="flex justify-around w-full mx-4 items-center">
-                                <Link href={`${User?.username}/edit`} className="font-semibold">Edit Profile</Link>
-                                <Button className="font-semibold">Insights</Button>
-                                <span className="font-semibold"><IoSettings className="size-9 cursor-pointer text-dark-text dark:text-light-text " /></span>
-                            </div>
-
-                            <div className="flex justify-around w-full mx-4 items-center">
-                                <div className="flex flex-col p-2 justify-center items-center">
-                                    <h2 className="text-lg font-semibold items-center" >{FollowingsLength}</h2>
-                                    <h2 className="text-md text-gray-400">Followings</h2>
-                                </div>
-
-                                <div className="v-line h-8 w-[1px]  bg-darkbg dark:bg-lightbg"></div>
-
-                                <div className="flex flex-col p-2 justify-center items-center">
-                                    <h2 className="text-lg font-semibold items-center" >{FollowersLength}</h2>
-                                    <h2 className="text-md text-gray-400">Followers</h2>
-                                </div>
-                                <div className="v-line h-8 w-[1px]  bg-darkbg dark:bg-lightbg"></div>
-
-                                <div className="flex flex-col p-2 justify-center items-center">
-                                    <h2 className="text-lg font-semibold items-center" >{PostsLength}</h2>
-                                    <h2 className="text-md text-gray-400">Posts</h2>
-                                </div>
-
-                            </div>
-                        </div>
                     </div>
-                </div>
+                ) : (
+                    <ProfilePageSkeleton />
+                )
+            }
 
-                <div className="line-h bg-darkbg dark:bg-lightbg w-full h-[1px]"></div>
-
-            </div>
 
             {/* Posts  */}
             <div className="w-full my-4">
@@ -141,7 +172,11 @@ function page() {
                             }
                             )
 
-                        ) : ""
+                        ) : (
+                            <div className="">
+                                <Skeleton className="size-80 rounded-xl my-3" />
+                            </div>
+                        )
                     }
 
                 </div>
