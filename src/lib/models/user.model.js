@@ -57,9 +57,15 @@ const userSchema = new Schema({
         required: false,
     },
     profilePic: {
-        type: String,
-        required: false,
-        trim: true,
+        public_id: {
+            type: String,
+            trim: true,
+        },
+        file: {
+            type: String,
+            required: false,
+            trim: true,
+        }
     },
     loginSession: [{
         type: String,

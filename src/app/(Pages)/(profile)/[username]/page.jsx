@@ -73,7 +73,7 @@ function page({ params: { username } }) {
                         <div className="profileDetails relative top-[-100px] flex">
 
                             <img
-                                src={`${personSvg}`}
+                                src={User?.profilePic?.file ? User?.profilePic?.file : profileSvg}
                                 alt="User Avatar"
                                 className="size-52 rounded-full "
                             />

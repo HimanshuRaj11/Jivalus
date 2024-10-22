@@ -26,7 +26,7 @@ const LeftSideBar = () => {
     const { showAuth } = useGlobalContext()
     const { User, loading } = useSelector((state) => ({ ...state.User }))
     const UserFullName = User?.firstName + " " + User?.lastName
-    const { suggestedUsers } = useSelector((state) => (state.suggestedUsers))
+    const { suggestedUsers } = useSelector((state) => (state?.suggestedUsers))
 
     const Followers = User?.followers
     const FollowersLength = Followers?.length
@@ -50,7 +50,7 @@ const LeftSideBar = () => {
                             </div>
                             <div className="flex items-center justify-center space-x-4 ">
                                 <img
-                                    src={`${personSvg}`}
+                                    src={User?.profilePic?.file ? User?.profilePic?.file : profileSvg}
                                     alt="User Avatar"
                                     className="size-16 rounded-full relative top-[-34px]"
                                 />
@@ -102,13 +102,13 @@ const LeftSideBar = () => {
                                 <li className={`${listStyle}`} key={i + 1}>
                                     <div className="flex items-center space-x-3">
                                         <img
-                                            src={user.profilePic ? user.profilePic : profileSvg}
+                                            src={user?.profilePic?.file ? user?.profilePic?.file : profileSvg}
                                             alt="User Avatar"
                                             className="w-10 h-10 rounded-full"
                                         />
                                         <div>
-                                            <h4 className="text-sm font-semibold">{user.firstName + " " + user.lastName}</h4>
-                                            <p className="text-xs text-gray-600">@{user.username}</p>
+                                            <h4 className="text-sm font-semibold">{user?.firstName + " " + user?.lastName}</h4>
+                                            <p className="text-xs text-gray-600">@{user?.username}</p>
                                         </div>
                                     </div>
                                     <button className="text-blue-500 text-sm font-semibold">Follow</button>

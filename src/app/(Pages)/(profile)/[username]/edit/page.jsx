@@ -8,16 +8,17 @@ import { MdDelete, MdModeEdit } from "react-icons/md";
 import { FaCamera } from "react-icons/fa";
 import axios from 'axios';
 import UploadProfileImage from '@/components/UploadProfileImage';
+import { toast } from 'react-toastify';
 
 const bannerImg = "https://t3.ftcdn.net/jpg/05/35/35/38/360_F_535353834_fAKyu7nTpbpNux5XdR5T63OUJ6gDOHlD.jpg"
 const personSvg = "https://cdn.pixabay.com/photo/2022/06/05/07/04/person-7243410_1280.png"
 const baseUrl = "http://localhost:3000/api"
 
 function page() {
-  const { User, loading } = useSelector((state) => ({ ...state.User }))
+  const { User } = useSelector((state) => ({ ...state.User }))
   const followers = User?.followers?.length
   const followings = User?.followings
-  const [PicUrl, setPicUrl] = useState(null)
+
   const [ProfileImage, setProfileImage] = useState(null)
 
   const [UpdatUser, setUpdateUser] = useState({
@@ -38,10 +39,6 @@ function page() {
     });
   };
 
-  const OnchangeHandler = (e) => {
-    e.target.files && setProfileImage(e.target.files[0])
-  }
-
   // Handle User Update Details Submit
   const handleUpdateInputs = async () => {
     console.log(UpdatUser);
@@ -55,6 +52,20 @@ function page() {
     }
   }
 
+  // handle Profile picture
+
+  const OnchangeHandler = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setProfileImage(reader.result); // base64 encoded
+    };
+
+  }
+
+
+
   // Handle Profile Picture Submit
 
   const handlePicSubmit = async () => {
@@ -62,33 +73,35 @@ function page() {
       if (!ProfileImage) {
         return
       }
-      const formData = new FormData();
-      await formData.append("Profile", ProfileImage)
-      formData.append('upload_preset', 'ml_default');
-
-
-
-      const res = await axios.post(`${baseUrl}/user/Update/ProfilePic`, formData)
-      console.log(res);
-
+      const res = await axios.post(`${baseUrl}/user/Update/ProfilePic`, { ProfileImage })
+      if (res.status !== 201) {
+        toast.error(`Somthing went wrong Please try again...`, {
+          position: "top-right"
+        });
+        setProfileImage("")
+        return
+      }
+      toast.success(`Profile Image Add successfull , please reload the page to view`, {
+        position: "top-right"
+      });
+      setProfileImage("")
+      return
     } catch (error) {
-      console.log(error);
-
+      return
     }
   }
 
   useEffect(() => {
     setUpdateUser({ ...User })
   }, [User])
+
   useEffect(() => {
     if (!ProfileImage) return;
-    setPicUrl(URL.createObjectURL(ProfileImage))
   }, [ProfileImage])
 
 
   return (
     <>
-
       <div className=" w-[75%]" >
         {/* Profile banner or details */}
         <div className="Profile-banner">
@@ -99,9 +112,9 @@ function page() {
           <div className="profileDetails relative top-[-100px] flex">
 
             <img
-              src={`${personSvg}`}
+              src={`${User?.profilePic ? User?.profilePic?.file : personSvg}`}
               alt="User Avatar"
-              className="size-52 rounded-full"
+              className="size-52 rounded-full object-fill"
             />
             <span className='absolute bottom-0 left-40 size-10'>
               <input type="file" name="" accept='image/*' id="file-input" onChange={OnchangeHandler} className="hidden" />
@@ -148,7 +161,7 @@ function page() {
         ProfileImage && (
           <div className="z-10 overflow-hidden fixed flex-col backdrop-blur-sm w-full h-screen top-[4rem] flex justify-center items-center">
             <div className="box size-72 rounded-full overflow-hidden dark:bg-dark-component">
-              <img src={PicUrl} className='size-72 object-cover' alt="" />
+              <img src={ProfileImage} className='size-72 object-cover' alt="" />
             </div>
             <Button onClick={handlePicSubmit}>Upload</Button>
           </div>

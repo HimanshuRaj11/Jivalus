@@ -84,7 +84,7 @@ function PostCard() {
                         <div key={index + 1} className="dark-shadow mx-auto rounded-lg  bg-light-component  dark:bg-dark-component shadow-lg overflow-hidden mt-2 mb-4">
                             <div className="flex items-center justify-between p-4">
                                 <div className="flex items-center">
-                                    <img className="w-10 h-10 rounded-full" src={userDetails?.profilePic ? userDetails?.profilePic : profileSvg} alt={""} />
+                                    <img className="w-10 h-10 rounded-full" src={userDetails?.profilePic?.file ? userDetails?.profilePic?.file : profileSvg} alt={""} />
                                     <div className="ml-3">
                                         <span className='flex flex-row '>
                                             <Link href={`http://localhost:3000/${userDetails?.username}`} className="dark:text-light-text text-dark-text font-semibold">{userDetails?.firstName + " " + userDetails?.lastName}</Link>

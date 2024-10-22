@@ -15,6 +15,8 @@ import { useGlobalContext } from '@/Context/ContextProvider';
 import RegisterForm from './Register';
 import { userSuggested } from '@/Redux/Slices/SuggestedUser';
 import { GetPosts } from '@/Redux/Slices/PostsSlice';
+const profileSvg = 'https://www.svgrepo.com/show/327465/person-circle.svg'
+
 const Navbar = () => {
 
     const { showAuth, setShowAuth, createPostbtn, setCreatePostBtn, Loginbtn, setLoginBtn, Registerbtn, setRegisterBtn } = useGlobalContext()
@@ -71,7 +73,7 @@ const Navbar = () => {
                                             <FiPlusCircle className="size-8" />
                                         </span>
                                         <Link href={`${User?.username}`} className=" dark:text-light-text text-dark-text hover:text-gray-800 flex items-center space-x-1">
-                                            <FaUserCircle className="size-8" />
+                                            <img className="w-10 h-10 rounded-full" src={User?.profilePic?.file ? User?.profilePic?.file : profileSvg} alt={""} />
                                         </Link>
                                     </div>
                                 ) : (
