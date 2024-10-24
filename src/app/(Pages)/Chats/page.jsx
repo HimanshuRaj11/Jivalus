@@ -68,9 +68,20 @@ function page() {
             </div>
           </div>
           <div className=" h-[1px] w-full my-2 bg-darkbg dark:bg-lightbg"></div>
-          <div className="overflow-y-auto h-[78%] ">
+          {/* chat area */}
+          <div className="overflow-y-auto h-[78%] p-3">
+
+            <div className='w-full flex justify-start items-center'>
+              <span>Heloo..</span>
+            </div>
+
+            <div className='w-full flex justify-end items-center'>
+              <span>Hey..</span>
+            </div>
 
           </div>
+
+          {/* message input */}
           <div className=" h-[1px] w-full my-2 bg-darkbg dark:bg-lightbg"></div>
           <div className="p-1 w-full h-16 flex flex-row items-center">
             <div className="w-[5%] flex items-center justify-around cursor-pointer text-yellow-400 ">
