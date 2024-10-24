@@ -80,7 +80,7 @@ function page({ params: { username } }) {
                         <div className="profileDetails relative top-[-100px] flex">
 
                             <img
-                                src={User?.profilePic?.file ? User?.profilePic?.file : profileSvg}
+                                src={userDetails?.profilePic?.file ? userDetails?.profilePic?.file : profileSvg}
                                 alt="User Avatar"
                                 className="size-52 rounded-full object-center "
                             />
@@ -98,7 +98,7 @@ function page({ params: { username } }) {
 
                                 <div className="flex flex-col justify-around items-center w-[56%] ">
                                     {
-                                        (username !== User.username) ? <>
+                                        (username !== User?.username) ? <>
                                             {
                                                 !isFollowing ? <Button className="bg-blue-600 text-white font-semibold hover:text-blue-600" >Follow</Button>
                                                     : <Button className="bg-blue-600 text-white font-semibold hover:text-blue-600" >Unfollow</Button>

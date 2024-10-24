@@ -36,6 +36,7 @@ const linkList = [
     {
         path: "/Chats",
         name: "Chats",
+        isUser: true,
         icon: <FaComments className="m-2 text-2xl" />,
     },
     {
@@ -62,7 +63,14 @@ function RightSideBar() {
     const pathname = usePathname()
 
     const { User } = useSelector((state) => ({ ...state.User }))
-    const { showAuth } = useGlobalContext()
+    const { showAuth, setLoginBtn } = useGlobalContext()
+
+
+    const isUser = async (_id) => {
+        if (!User) {
+            setLoginBtn(true)
+        }
+    }
 
     const logouthandle = async () => {
         try {
@@ -88,7 +96,7 @@ function RightSideBar() {
 
                         linkList.map((link, i) => {
                             return (
-                                <Link key={i} href={`${link.path}`} className={`${listClasses}`}>
+                                <Link key={i} href={`${link.path}`} onClick={() => link.isUser && isUser()} className={`${listClasses}`}>
                                     {link.icon}
                                     {
                                         pathname == "/" ?

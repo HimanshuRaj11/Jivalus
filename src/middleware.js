@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 export function middleware(request) {
     const path = request.nextUrl.pathname
 
-    const isPublicPath = path === '/login' || path === '/signup' || path === '/verifyemail'
+    const isPublicPath = path === '/' || path === '/' || path === '/verifyemail'
 
     const token = cookies().get("Jivalus_auth_token")?.value || '';
 
@@ -13,7 +13,7 @@ export function middleware(request) {
     }
 
     if (!isPublicPath && !token) {
-        return NextResponse.redirect(new URL('/login', request.nextUrl))
+        return NextResponse.redirect(new URL('/', request.nextUrl))
     }
 
 }
@@ -22,11 +22,8 @@ export function middleware(request) {
 // See "Matching Paths" below to learn more
 export const config = {
     matcher: [
-        // '/',
+        '/Chats',
         "/:username*/edit",
-        '/profile',
-        '/login',
-        '/signup',
         '/verifyemail'
     ]
 }

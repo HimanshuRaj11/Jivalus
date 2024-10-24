@@ -10,6 +10,14 @@ import { ImAttachment } from "react-icons/im";
 import { BsSendFill } from "react-icons/bs";
 import { FaFaceGrin } from "react-icons/fa6";
 const listStyle = "flex items-center justify-between bg-lightbg rounded-lg dark:bg-darkbg p-1 my-2"
+const scrollBarStyle = `[&::-webkit-scrollbar]:w-2
+  [&::-webkit-scrollbar-track]:rounded-full
+  [&::-webkit-scrollbar-track]:bg-gray-100
+  [&::-webkit-scrollbar-thumb]:rounded-full
+  [&::-webkit-scrollbar-thumb]:bg-gray-300
+  dark:[&::-webkit-scrollbar-track]:bg-neutral-700
+  dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500`;
+
 
 function page() {
   const userDetails = {
@@ -40,7 +48,7 @@ function page() {
               className="md:w-96 px-3 py-2 border bg-lightbg dark:bg-darkbg rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          <div className="overflow-y-auto">
+          <div className={`overflow-y-auto ${scrollBarStyle}`}>
             {
               <li className={`${listStyle} text-sm`} key={1}>
                 <div className="w-full p-2 h-12 rounded-md flex flex-row items-center">
@@ -67,18 +75,28 @@ function page() {
               <FaEllipsisH className="text-gray-600 cursor-pointer" />
             </div>
           </div>
-          <div className=" h-[1px] w-full my-2 bg-darkbg dark:bg-lightbg"></div>
+          <div className=" h-[1px] w-full my-2 bg-darkbg dark:bg-lightbg "></div>
           {/* chat area */}
-          <div className="overflow-y-auto h-[78%] p-3">
+          <div className="h-[78%] flex flex-col justify-end">
+            <div className={`overflow-y-auto max-h-full p-3 ${scrollBarStyle}`}>
 
-            <div className='w-full flex justify-start items-center'>
-              <span>Heloo..</span>
+              {/* messages */}
+              <div div className='w-full flex justify-start my-1'>
+                <div className="rounded-md max-w-[52%] py-1   flex justify-start items-center bg-lightbg dark:bg-darkbg">
+                  <img src={profileSvg} className='size-10 mx-2' alt="" />
+                  <span className=' max-w-full mx-2'>Heloo.. Lorem, , eius sunt voluptates officia.</span>
+                </div>
+              </div>
+
+              <div className='w-full flex justify-end items-center  my-1'>
+                <div className="rounded-md max-w-[52%] py-1 flex justify-end items-center bg-lightbg dark:bg-darkbg">
+                  <span className='mx-2'>hey..</span>
+                  <img src={profileSvg} className='size-10 mx-2' alt="" />
+                </div>
+              </div>
+              {/* messages */}
+
             </div>
-
-            <div className='w-full flex justify-end items-center'>
-              <span>Hey..</span>
-            </div>
-
           </div>
 
           {/* message input */}
@@ -102,7 +120,7 @@ function page() {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   )
 }
 
