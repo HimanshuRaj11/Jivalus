@@ -4,12 +4,12 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ImCross } from "react-icons/im";
-import { useGlobalContext } from "@/Context/ContextProvider";
+import { useGlobalContext } from "../Context/ContextProvider";
 import axios from "axios";
 import { GrLinkNext, GrLinkPrevious } from "react-icons/gr";
 import { FaCircleCheck } from "react-icons/fa6";
 import { MdCancel } from "react-icons/md";
-import { fetchUser } from "@/Redux/Slices/User.slice";
+import { fetchUser } from "../Redux/Slices/User.slice";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 

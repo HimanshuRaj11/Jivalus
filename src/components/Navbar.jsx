@@ -7,18 +7,19 @@ import { BiLogInCircle } from "react-icons/bi";
 import { FiPlusCircle } from "react-icons/fi";
 import { ModeToggle } from './ui/ModelToggle';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUser } from "@/Redux/Slices/User.slice.js"
+import { fetchUser } from "../Redux/Slices/User.slice.js"
 import CreatePost from './create-post';
 import Login from './Login';
 import PageLoader from './pageLoader';
-import { useGlobalContext } from '@/Context/ContextProvider';
+import { useGlobalContext } from '../Context/ContextProvider';
 import RegisterForm from './Register';
-import { userSuggested } from '@/Redux/Slices/SuggestedUser';
-import { GetPosts } from '@/Redux/Slices/PostsSlice';
+import { userSuggested } from '../Redux/Slices/SuggestedUser';
+import { GetPosts } from '../Redux/Slices/PostsSlice';
 const profileSvg = 'https://www.svgrepo.com/show/327465/person-circle.svg'
+import { usePathname } from 'next/navigation'
 
 const Navbar = () => {
-
+    const pathname = usePathname()
     const { showAuth, setShowAuth, createPostbtn, setCreatePostBtn, Loginbtn, setLoginBtn, Registerbtn, setRegisterBtn } = useGlobalContext()
 
     const dispatch = useDispatch();
@@ -27,7 +28,7 @@ const Navbar = () => {
 
 
     if (typeof window !== "undefined") {
-        document.body.style.overflow = createPostbtn || Loginbtn || Registerbtn ? "hidden" : "auto";
+        document.body.style.overflow = (pathname == "/Chats") || createPostbtn || Loginbtn || Registerbtn ? "hidden" : "auto";
     }
     useEffect(() => {
         if (User?.username) {

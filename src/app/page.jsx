@@ -10,7 +10,7 @@ export default function Home() {
 
   return (
     <Homelayout>
-      <div className="min-h-screen w-full">
+      <div className="min-h-screen w-full transition-all duration-300">
         <PostCard />
       </div>
     </Homelayout>

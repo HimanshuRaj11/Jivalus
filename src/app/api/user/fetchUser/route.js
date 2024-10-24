@@ -1,8 +1,8 @@
 
-import connectDB from "@/lib/db";
+import connectDB from "../../../../lib/db";
 import { NextResponse } from "next/server";
-import User from "@/lib/models/user.model.js";
-import { getDataFromToken } from "@/helpers/getDataToken";
+import User from "../../../../lib/models/user.model";
+import { getDataFromToken } from "../../../../helpers/getDataToken";
 
 export async function GET() {
     try {

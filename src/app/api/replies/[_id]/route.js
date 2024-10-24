@@ -1,16 +1,14 @@
 
 
-import { getDataFromToken } from "@/helpers/getDataToken";
-import connectDB from "@/lib/db";
-import Comment from "@/lib/models/comment.model.js";
-import Replies from "@/lib/models/replies.model.js";
+import { getDataFromToken } from "../../../../helpers/getDataToken.js";
+import Comment from "../../../../lib/models/comment.model.js";
+import Replies from "../../../../lib/models/replies.model";
 import { NextResponse } from "next/server";
 
 
 export async function POST(request, { params: { _id } }) {            // here _id is Id of Comments
     try {
         const { replies } = await request.json()
-        await connectDB();
         const userId = await getDataFromToken(request);
         if (!userId) {
             return NextResponse.json({ message: "User Not found" }, { status: 404 })

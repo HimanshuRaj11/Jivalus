@@ -1,9 +1,8 @@
 
 
-import { getDataFromToken } from "@/helpers/getDataToken";
-import connectDB from "@/lib/db";
-import Comment from "@/lib/models/comment.model.js";
-import Post from "@/lib/models/post.model.js";
+import { getDataFromToken } from "../../../../helpers/getDataToken";
+import Comment from "../../../../lib/models/comment.model"
+import Post from "../../../../lib/models/post.model.js";
 import { NextResponse } from "next/server";
 
 

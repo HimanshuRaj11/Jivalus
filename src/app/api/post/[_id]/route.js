@@ -1,5 +1,5 @@
 
-import { GetPost } from "@/lib/temp/getPosts";
+import { GetPost } from "../../../../lib/temp/getPosts";
 import { NextResponse } from "next/server";
 
 

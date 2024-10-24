@@ -22,6 +22,7 @@ export const GetPost = async ({ _id }) => {
 
         return postData;
     } catch (error) {
+        console.log(error);
         return { error: error.message }
     }
 }

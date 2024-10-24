@@ -1,4 +1,4 @@
-import RightSideBar from "@/components/RightSideBar";
+import RightSideBar from "../../../../components/RightSideBar";
 import Footer from "./footer";
 
 export default function Layout({ children }) {

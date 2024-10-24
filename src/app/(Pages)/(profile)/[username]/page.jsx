@@ -1,17 +1,24 @@
 "use client"
 
-import { Button } from '@/components/ui/button'
+import { Button } from '../../../../components/ui/button';
 import React, { useEffect, useState } from 'react'
 import { IoSettings } from "react-icons/io5";
 import Footer from './footer';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-import ProfilePageSkeleton from '@/components/Skeleton/ProfilePage';
-import { Skeleton } from '@/components/ui/skeleton';
+import ProfilePageSkeleton from '../../../../components/Skeleton/ProfilePage';
+import { Skeleton } from '../../../../components/ui/skeleton';
 const bannerImg = "https://t3.ftcdn.net/jpg/05/35/35/38/360_F_535353834_fAKyu7nTpbpNux5XdR5T63OUJ6gDOHlD.jpg"
 const personSvg = "https://cdn.pixabay.com/photo/2022/06/05/07/04/person-7243410_1280.png"
-
+const profileSvg = 'https://www.svgrepo.com/show/327465/person-circle.svg'
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+} from "../../../../components/ui/carousel"
 
 function page({ params: { username } }) {
 
@@ -75,7 +82,7 @@ function page({ params: { username } }) {
                             <img
                                 src={User?.profilePic?.file ? User?.profilePic?.file : profileSvg}
                                 alt="User Avatar"
-                                className="size-52 rounded-full "
+                                className="size-52 rounded-full object-center "
                             />
                             <div className="details w-full h-52 flex flex-row relative top-[80px] pt-8 pl-10 ">
 
@@ -157,19 +164,48 @@ function page({ params: { username } }) {
                         posts && posts?.length > 0 ? (
 
                             posts.map((post, index) => {
-                                const files = post?.file
+                                const files = post?.files
 
                                 const comments = post?.comments
                                 const commentsLength = comments?.length
 
                                 const likes = post?.likes
                                 const likesLength = likes?.length
+                                const PostFileLength = files.length
 
                                 return (
                                     <div key={index} className="bg-light-component cursor-pointer p-2 flex flex-col items-center justify-between dark:bg-dark-component shadow-md my-2 rounded-lg overflow-hidden transform transition duration-500 hover:scale-105">
 
-                                        <img src={files[0]} alt={''} className="w-[96%] h-[17rem] object-contain rounded-lg" />
+                                        <Carousel>
+                                            <CarouselContent>
+                                                {
+                                                    files?.map((file, i) => {
+                                                        return (
+                                                            <CarouselItem>
+                                                                <div key={i} className="p-4 flex justify-center ">
+                                                                    <div className="carousel-item w-full relative">
+                                                                        {
+                                                                            PostFileLength !== 1 ?
+                                                                                <span className='absolute top-2 left-2'>{i + 1}/{PostFileLength}</span> : ""
+                                                                        }
+                                                                        <img className="w-[100%] max-h-[30rem] object-contain rounded-lg" src={file?.url} alt={userDetails?.username} />
+                                                                    </div>
+                                                                </div>
+                                                            </CarouselItem>
+                                                        )
+                                                    })
+                                                }
+                                            </CarouselContent>
+                                            {
+                                                PostFileLength !== 1 ?
+                                                    <>
+                                                        <CarouselPrevious className="left-4 " />
+                                                        <CarouselNext className="right-4" />
+                                                    </>
+                                                    : ""
+                                            }
 
+                                        </Carousel>
 
                                         <div className="flex justify-between mt-2 w-full">
                                             <span className="text-gray-500 text-sm">Likes: {likesLength}</span>

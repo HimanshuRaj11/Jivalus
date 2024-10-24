@@ -1,7 +1,7 @@
 "use client"
 
 
-import { useGlobalContext } from '@/Context/ContextProvider';
+import { useGlobalContext } from '../Context/ContextProvider';
 import axios from 'axios';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
@@ -10,14 +10,24 @@ import { useSelector } from 'react-redux';
 import PostCardSkeleton from './Skeleton/PostCard';
 import { BsSendFill } from "react-icons/bs";
 const profileSvg = 'https://www.svgrepo.com/show/327465/person-circle.svg'
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+} from "../components/ui/carousel"
+import UserProfileInfo from './userProfileInfo';
+
 
 function PostCard() {
     const { setLoginBtn } = useGlobalContext()
     const { User } = useSelector((state) => ({ ...state.User }))
-    const { Posts } = useSelector((state) => state.Posts);
+    const { Posts, message } = useSelector((state) => state.Posts);
     const followings = User?.followings
     const [CommentInput, setCommentInput] = useState(null)
     const [comment, setComment] = useState("")
+
 
 
     const follow = async (_id) => {
@@ -75,44 +85,85 @@ function PostCard() {
             {Posts && Posts.length > 0 ? (
                 Posts.map((post, index) => {
                     const PostDetail = post?.post
-                    const PostFile = PostDetail?.file
+                    const PostFile = PostDetail?.files
+                    const PostFileLength = PostFile.length
+                    const createdAt = PostDetail?.createdAt
+
+                    const createdAtDate = new Date(createdAt);
+                    const currentDate = new Date();
+
+                    const differenceInMilliseconds = currentDate - createdAtDate;
+                    const differenceInSeconds = Math.floor(differenceInMilliseconds / 1000);
+                    const differenceInMinutes = Math.floor(differenceInSeconds / 60);
+                    const differenceInHours = Math.floor(differenceInMinutes / 60);
+                    const differenceInDays = Math.floor(differenceInHours / 24);
+                    let PostTime = ""
+                    if (differenceInDays > 0) {
+                        PostTime = `${differenceInDays} days ago`;
+                    } else if (differenceInHours > 0) {
+                        PostTime = `${differenceInHours} hours ago`;
+                    } else if (differenceInMinutes > 0) {
+                        PostTime = `${differenceInMinutes} minutes ago`;
+                    } else {
+                        PostTime = `${differenceInSeconds} seconds ago`;
+                    }
+
                     const userDetails = post?.userDetails
-                    const isFollowing = followings?.includes(userDetails._id) || (User?._id == userDetails?._id)
+
+                    const isFollowing = followings?.includes(userDetails?._id) || (User?._id == userDetails?._id)
                     const isliked = PostDetail?.likes?.includes(User?._id)
 
+                    const userDetail = {
+                        profilePic: userDetails?.profilePic?.file,
+                        isFollowing,
+                        _id: userDetails?._id,
+                        username: userDetails?.username,
+                        firstName: userDetails?.firstName,
+                        lastName: userDetails?.lastName
+                    }
                     return (
                         <div key={index + 1} className="dark-shadow mx-auto rounded-lg  bg-light-component  dark:bg-dark-component shadow-lg overflow-hidden mt-2 mb-4">
-                            <div className="flex items-center justify-between p-4">
-                                <div className="flex items-center">
-                                    <img className="w-10 h-10 rounded-full" src={userDetails?.profilePic?.file ? userDetails?.profilePic?.file : profileSvg} alt={""} />
-                                    <div className="ml-3">
-                                        <span className='flex flex-row '>
-                                            <Link href={`http://localhost:3000/${userDetails?.username}`} className="dark:text-light-text text-dark-text font-semibold">{userDetails?.firstName + " " + userDetails?.lastName}</Link>
-                                            {
-                                                isFollowing ? "" : <span onClick={() => follow(userDetails?._id)} className="mx-5 text-blue-600 font-semibold cursor-pointer">Follow</span>
-                                            }
-
-                                        </span>
-                                        <Link href={`http://localhost:3000/${userDetails?.username}`} className="text-gray-600 text-sm">@ {userDetails?.username}</Link>
-                                    </div>
-                                </div>
+                            <div className="flex w-full justify-between items-center flex-row p-4">
+                                <UserProfileInfo userDetails={userDetail} />
                                 <FaEllipsisH className="text-gray-600 cursor-pointer" />
                             </div>
                             <div className="px-4">
-                                <p className="text-gray-700 text-sm">2 hours ago</p>
+                                <p className="text-gray-700 text-sm">{PostTime}</p>
                             </div>
                             <div className="px-4 py-2">
                                 <p className="dark:text-light-text text-dark-text">{PostDetail?.discription}</p>
                             </div>
-                            {
-                                PostFile?.map((file, i) => {
-                                    return (
-                                        <div key={i} className="p-4 flex justify-center">
-                                            <img className="w-[100%] max-h-[30rem] object-contain rounded-lg" src={file} alt="Post" />
-                                        </div>
-                                    )
-                                })
-                            }
+
+                            <Carousel>
+                                <CarouselContent>
+                                    {
+                                        PostFile?.map((file, i) => {
+                                            return (
+                                                <CarouselItem>
+                                                    <div key={i} className="p-4 flex justify-center ">
+                                                        <div className="carousel-item w-full relative">
+                                                            {
+                                                                PostFileLength !== 1 ?
+                                                                    <span className='absolute top-2 left-2'>{i + 1}/{PostFileLength}</span> : ""
+                                                            }
+                                                            <img className="w-[100%] max-h-[30rem] object-contain rounded-lg" src={file?.url} alt={userDetails?.username} />
+                                                        </div>
+                                                    </div>
+                                                </CarouselItem>
+                                            )
+                                        })
+                                    }
+                                </CarouselContent>
+                                {
+                                    PostFileLength !== 1 ?
+                                        <>
+                                            <CarouselPrevious className="left-4 " />
+                                            <CarouselNext className="right-4" />
+                                        </>
+                                        : ""
+                                }
+
+                            </Carousel>
 
                             <div className="flex items-center w-full justify-between px-4 py-2">
                                 <div className="flex items-center w-full justify-between space-x-4">

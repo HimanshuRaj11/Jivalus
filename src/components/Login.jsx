@@ -6,9 +6,9 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { fetchUser } from "@/Redux/Slices/User.slice.js";
+import { fetchUser } from "../Redux/Slices/User.slice";
 import { ImCross } from "react-icons/im";
-import { useGlobalContext } from "@/Context/ContextProvider";
+import { useGlobalContext } from "../Context/ContextProvider";
 
 
 function Login() {

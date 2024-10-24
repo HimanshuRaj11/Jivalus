@@ -2,12 +2,12 @@
 
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Button } from '@/components/ui/button'
+import { Button } from '../../../../../components/ui/button';
 import { IoSettings } from "react-icons/io5";
 import { MdDelete, MdModeEdit } from "react-icons/md";
 import { FaCamera } from "react-icons/fa";
 import axios from 'axios';
-import UploadProfileImage from '@/components/UploadProfileImage';
+import UploadProfileImage from '../../../../../components/UploadProfileImage';
 import { toast } from 'react-toastify';
 
 const bannerImg = "https://t3.ftcdn.net/jpg/05/35/35/38/360_F_535353834_fAKyu7nTpbpNux5XdR5T63OUJ6gDOHlD.jpg"
@@ -54,7 +54,7 @@ function page() {
 
   // handle Profile picture
 
-  const OnchangeHandler = (e) => {
+  const OnchangeFileHandler = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -117,7 +117,7 @@ function page() {
               className="size-52 rounded-full object-fill"
             />
             <span className='absolute bottom-0 left-40 size-10'>
-              <input type="file" name="" accept='image/*' id="file-input" onChange={OnchangeHandler} className="hidden" />
+              <input type="file" name="" accept='image/*' id="file-input" onChange={OnchangeFileHandler} className="hidden" />
               <label htmlFor="file-input" className="cursor-pointer">
                 <FaCamera className="size-10" />
               </label>

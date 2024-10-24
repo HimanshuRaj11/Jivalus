@@ -1,17 +1,17 @@
 "use client"
 
-import LeftSideBar from "@/components/LeftSideBar"
-import RightSideBar from "@/components/RightSideBar"
+import LeftSideBar from "../components/LeftSideBar"
+
 
 export default function HomeLayout({ children }) {
     return (
-        <div className="w-full flex justify-around bg-lightbg dark:bg-darkbg min-h-screen ">
+        <div className="w-full justify-around sm:justify-normal flex lg:justify-around  min-h-screen ">
 
             <LeftSideBar />
-            <div className=" w-[80%] lg:w-[50%]">
+            <div className=" w-[80%] lg:w-[50%] ml-4  ">
                 {children}
             </div>
-            <RightSideBar />
+
         </div>
     )
 }

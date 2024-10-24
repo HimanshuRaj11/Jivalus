@@ -8,7 +8,7 @@ export const getDataFromToken = async () => {
         if (!decodedToken) return
         return decodedToken.id;
     } catch (error) {
-        throw new Error(error.message);
+        return ("User not LogedIn");
     }
 
 }

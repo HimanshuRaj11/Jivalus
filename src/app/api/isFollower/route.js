@@ -1,4 +1,4 @@
-import User from "@/lib/models/user.model"
+import User from "../../../lib/models/user.model";
 import { NextResponse } from "next/server"
 
 export async function POST(request) {

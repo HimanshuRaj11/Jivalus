@@ -1,8 +1,8 @@
-import User from "@/lib/models/user.model.js";
+import User from "../../../../lib/models/user.model";
 import { NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
-import connectDB from "@/lib/db";
+import connectDB from "../../../../lib/db";
 import { cookies } from "next/headers";
 
 

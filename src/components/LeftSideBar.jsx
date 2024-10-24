@@ -1,14 +1,15 @@
 "use client"
 // components/LeftSideBar.js
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Button } from './ui/button';
 import Link from 'next/link';
-import { useDispatch, useSelector } from 'react-redux';
-import { useGlobalContext } from '@/Context/ContextProvider';
-import { userSuggested } from '@/Redux/Slices/SuggestedUser';
+import { useSelector } from 'react-redux';
+import { useGlobalContext } from '../Context/ContextProvider';
+import UserProfileInfo from './userProfileInfo';
+
+
 const bannerImg = "https://t3.ftcdn.net/jpg/05/35/35/38/360_F_535353834_fAKyu7nTpbpNux5XdR5T63OUJ6gDOHlD.jpg"
-const personSvg = "https://cdn.pixabay.com/photo/2022/06/05/07/04/person-7243410_1280.png"
 const addvertisementImg = "https://indianmediastudies.com/wp-content/uploads/2023/11/what-is-advertising-copy.jpeg.webp"
 const profileSvg = 'https://www.svgrepo.com/show/327465/person-circle.svg'
 const scrollBarStyle = `[&::-webkit-scrollbar]:w-2
@@ -19,14 +20,16 @@ const scrollBarStyle = `[&::-webkit-scrollbar]:w-2
   dark:[&::-webkit-scrollbar-track]:bg-neutral-700
   dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500`
 
-const listStyle = "flex items-center justify-between bg-lightbg rounded-lg dark:bg-darkbg p-3 my-2"
+const listStyle = "flex items-center justify-between bg-lightbg rounded-lg dark:bg-darkbg p-1 my-2"
 
 
 const LeftSideBar = () => {
     const { showAuth } = useGlobalContext()
     const { User, loading } = useSelector((state) => ({ ...state.User }))
-    const UserFullName = User?.firstName + " " + User?.lastName
     const { suggestedUsers } = useSelector((state) => (state?.suggestedUsers))
+
+    const UserFullName = User?.firstName + " " + User?.lastName
+    const followings = User?.followings
 
     const Followers = User?.followers
     const FollowersLength = Followers?.length
@@ -76,7 +79,7 @@ const LeftSideBar = () => {
                             <div className="line-h bg-darkbg dark:bg-lightbg w-full h-[1px]"></div>
                             <div className="btn flex justify-center mt-2">
                                 <Link href={`${User?.username}`}>
-                                    <Button varient="outline" className="text-lg dark:text-white text-black font-semibold p-2 bg-blue-500 hover:bg-blue-600">My Profile</Button>
+                                    <Button varient="outline" className="text-lg dark:text-white text-black font-semibold p-2 bg-blue-600 hover:bg-blue-500">My Profile</Button>
                                 </Link>
                             </div>
                         </div>
@@ -96,22 +99,20 @@ const LeftSideBar = () => {
 
                 <ul className={`space-y-3 pe-2 mt-2 overflow-y-scroll h-[16.8rem] ${scrollBarStyle}`}>
                     {suggestedUsers && suggestedUsers.length > 0 ? (
-                        suggestedUsers.map((user, i) => {
+                        suggestedUsers.map((userDetails, i) => {
+                            const isFollowing = followings?.includes(userDetails?._id) || (User?._id == userDetails?._id)
 
+                            const userDetail = {
+                                profilePic: userDetails?.profilePic?.file,
+                                isFollowing,
+                                _id: userDetails?._id,
+                                username: userDetails?.username,
+                                firstName: userDetails?.firstName,
+                                lastName: userDetails?.lastName
+                            }
                             return (
-                                <li className={`${listStyle}`} key={i + 1}>
-                                    <div className="flex items-center space-x-3">
-                                        <img
-                                            src={user?.profilePic?.file ? user?.profilePic?.file : profileSvg}
-                                            alt="User Avatar"
-                                            className="w-10 h-10 rounded-full"
-                                        />
-                                        <div>
-                                            <h4 className="text-sm font-semibold">{user?.firstName + " " + user?.lastName}</h4>
-                                            <p className="text-xs text-gray-600">@{user?.username}</p>
-                                        </div>
-                                    </div>
-                                    <button className="text-blue-500 text-sm font-semibold">Follow</button>
+                                <li className={`${listStyle} text-sm`} key={i + 1}>
+                                    <UserProfileInfo userDetails={userDetail} />
                                 </li>
                             )
 

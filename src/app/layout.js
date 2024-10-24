@@ -1,11 +1,12 @@
 import localFont from "next/font/local";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import { ThemeProvider } from "@/components/ui/ThemeProvider";
+import Navbar from "../components/Navbar";
+import { ThemeProvider } from "../components/ui/ThemeProvider";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Providers from "@/Redux/provider";
-import { GlobalContextProvider } from "@/Context/ContextProvider";
+import Providers from "../Redux/provider";
+import { GlobalContextProvider } from "../Context/ContextProvider";
+import RightSideBar from "../components/RightSideBar";
 
 
 const geistSans = localFont({
@@ -40,7 +41,7 @@ export default function RootLayout({ children }) {
 
               <Navbar />
               {children}
-
+              <RightSideBar />
             </ThemeProvider>
           </Providers>
         </body>

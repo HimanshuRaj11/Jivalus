@@ -1,6 +1,6 @@
-import { getDataFromToken } from "@/helpers/getDataToken";
-import Post from "@/lib/models/post.model";
-import { GetPost } from "@/lib/temp/getPosts"
+import { getDataFromToken } from "../../../../../helpers/getDataToken";
+import Post from "../../../../../lib/models/post.model";
+import { GetPost } from "../../../../../lib/temp/getPosts"
 import { NextResponse } from "next/server"
 
 export async function POST(request, { params: { _id } }) { // id of Post
