@@ -4,13 +4,13 @@ import { cookies } from "next/headers";
 export function middleware(request) {
     const path = request.nextUrl.pathname
 
-    const isPublicPath = path === '/' || path === '/' || path === '/verifyemail'
+    const isPublicPath = path === '/' || path === '/verifyemail'
 
     const token = cookies().get("Jivalus_auth_token")?.value || '';
 
-    if (isPublicPath && token) {
-        return NextResponse.redirect(new URL('/', request.nextUrl))
-    }
+    // if (isPublicPath && token) {
+    //     return NextResponse.redirect(new URL('/', request.nextUrl))
+    // }
 
     if (!isPublicPath && !token) {
         return NextResponse.redirect(new URL('/', request.nextUrl))

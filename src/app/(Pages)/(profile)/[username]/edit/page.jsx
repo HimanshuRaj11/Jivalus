@@ -9,13 +9,14 @@ import { FaCamera } from "react-icons/fa";
 import axios from 'axios';
 import UploadProfileImage from '../../../../../components/UploadProfileImage';
 import { toast } from 'react-toastify';
+import { selectProcessedUsers } from "../../../../../Redux/selector"
 
 const bannerImg = "https://t3.ftcdn.net/jpg/05/35/35/38/360_F_535353834_fAKyu7nTpbpNux5XdR5T63OUJ6gDOHlD.jpg"
 const personSvg = "https://cdn.pixabay.com/photo/2022/06/05/07/04/person-7243410_1280.png"
 const baseUrl = "http://localhost:3000/api"
 
 function page() {
-  const { User } = useSelector((state) => ({ ...state.User }))
+  const { User, loading } = useSelector(selectProcessedUsers)
   const followers = User?.followers?.length
   const followings = User?.followings
 

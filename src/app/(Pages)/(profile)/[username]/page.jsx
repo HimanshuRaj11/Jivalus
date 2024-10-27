@@ -19,10 +19,11 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from "../../../../components/ui/carousel"
+import { selectProcessedUsers } from '../../../../Redux/selector';
 
 function page({ params: { username } }) {
 
-    const { User, loading } = useSelector((state) => ({ ...state.User }))
+    const { User, loading } = useSelector(selectProcessedUsers)
 
     const [userDetails, setUserdetails] = useState()
 
@@ -34,8 +35,6 @@ function page({ params: { username } }) {
     const Followings = userDetails?.followings
     const FollowingsLength = Followings?.length;
     const isFollowing = Followings?.includes(userDetails._id)
-    console.log(isFollowing);
-
 
     const Posts = userDetails?.posts
     const PostsLength = Posts?.length;
@@ -177,7 +176,7 @@ function page({ params: { username } }) {
                                     <div key={index} className="bg-light-component cursor-pointer p-2 flex flex-col items-center justify-between dark:bg-dark-component shadow-md my-2 rounded-lg overflow-hidden transform transition duration-500 hover:scale-105">
 
                                         <Carousel>
-                                            <CarouselContent>
+                                            <CarouselContent key={index + 1}>
                                                 {
                                                     files?.map((file, i) => {
                                                         return (

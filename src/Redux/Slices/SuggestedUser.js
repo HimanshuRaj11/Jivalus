@@ -21,8 +21,8 @@ export const SuggestedUserslice = createSlice({
             })
             .addCase(userSuggested.fulfilled, (state, action) => {
                 state.loading = false;
-                state.suggestedUsers = action.payload.suggestedUsers;
-                state.message = action.payload.message;
+                state.suggestedUsers = action?.payload?.suggestedUsers;
+                state.message = action.payload?.message;
             })
             .addCase(userSuggested.rejected, (state, action) => {
                 state.loading = false;

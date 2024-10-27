@@ -1,5 +1,5 @@
 "use client"
-import useSocket from "@/lib/hooks/useSocket";
+import useSocket from "../../lib/hooks/useSocket";
 import { useState } from "react";
 
 export default function Chat() {
@@ -8,6 +8,8 @@ export default function Chat() {
     const [chat, setChat] = useState([]);
 
     const sendMessage = () => {
+        console.log(socket);
+
         if (socket) {
             socket.emit("message", message);
             setMessage("");
@@ -15,9 +17,9 @@ export default function Chat() {
     };
 
     // Listen for new messages
-    socket?.on("message", (newMessage) => {
-        setChat((prevChat) => [...prevChat, newMessage]);
-    });
+    // socket?.on("message", (newMessage) => {
+    //     setChat((prevChat) => [...prevChat, newMessage]);
+    // });
 
     return (
         <div className="bg-dark-component w-full min-h-screen flex justify-center items-center">

@@ -18,12 +18,14 @@ import {
     CarouselPrevious,
 } from "../components/ui/carousel"
 import UserProfileInfo from './userProfileInfo';
+import { selectProcessedUsers, selectSortedPosts } from '../Redux/selector';
 
 
 function PostCard() {
     const { setLoginBtn } = useGlobalContext()
-    const { User } = useSelector((state) => ({ ...state.User }))
-    const { Posts, message } = useSelector((state) => state.Posts);
+    const { User, loading } = useSelector(selectProcessedUsers)
+    const { Posts, message } = useSelector(selectSortedPosts);
+
     const followings = User?.followings
     const [CommentInput, setCommentInput] = useState(null)
     const [comment, setComment] = useState("")
@@ -67,15 +69,11 @@ function PostCard() {
     const postComment = async (_id) => {
         try {
             const res = await axios.post(`http://localhost:3000/api/comment/${_id}`, { comment })
-            console.log(res);
-
             setComment("")
             setCommentInput(null)
         } catch (error) {
-            console.log(error);
-
+            return error
         }
-        console.log(comment, _id);
 
     }
 
@@ -114,7 +112,7 @@ function PostCard() {
                     const isliked = PostDetail?.likes?.includes(User?._id)
 
                     const userDetail = {
-                        profilePic: userDetails?.profilePic?.file,
+                        profilePic: userDetails?.profilePic,
                         isFollowing,
                         _id: userDetails?._id,
                         username: userDetails?.username,
@@ -139,8 +137,8 @@ function PostCard() {
                                     {
                                         PostFile?.map((file, i) => {
                                             return (
-                                                <CarouselItem>
-                                                    <div key={i} className="p-4 flex justify-center ">
+                                                <CarouselItem key={i}>
+                                                    <div className="p-4 flex justify-center ">
                                                         <div className="carousel-item w-full relative">
                                                             {
                                                                 PostFileLength !== 1 ?

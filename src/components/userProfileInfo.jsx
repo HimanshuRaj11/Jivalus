@@ -24,7 +24,7 @@ function UserProfileInfo({ userDetails }) {
     return (
         <div className="flex items-center justify-between">
             <div className="flex items-center">
-                <img className="w-10 h-10 rounded-full" src={profilePic ? profilePic : profileSvg} alt={""} />
+                <img className="w-10 h-10 rounded-full" src={profilePic ? profilePic.file : profileSvg} alt={""} />
                 <div className="ml-3">
                     <span className='flex flex-row '>
                         <Link href={`http://localhost:3000/${username}`} className="mr-3 dark:text-light-text text-dark-text font-semibold">

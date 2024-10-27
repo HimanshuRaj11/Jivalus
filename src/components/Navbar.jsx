@@ -7,24 +7,26 @@ import { BiLogInCircle } from "react-icons/bi";
 import { FiPlusCircle } from "react-icons/fi";
 import { ModeToggle } from './ui/ModelToggle';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUser } from "../Redux/Slices/User.slice.js"
 import CreatePost from './create-post';
 import Login from './Login';
 import PageLoader from './pageLoader';
 import { useGlobalContext } from '../Context/ContextProvider';
 import RegisterForm from './Register';
+import { fetchUser } from '../Redux/Slices/User.slice';
 import { userSuggested } from '../Redux/Slices/SuggestedUser';
 import { GetPosts } from '../Redux/Slices/PostsSlice';
+
 const profileSvg = 'https://www.svgrepo.com/show/327465/person-circle.svg'
 import { usePathname } from 'next/navigation'
+import { selectProcessedUsers } from "../Redux/selector.js"
 
 const Navbar = () => {
-    const pathname = usePathname()
-    const { showAuth, setShowAuth, createPostbtn, setCreatePostBtn, Loginbtn, setLoginBtn, Registerbtn, setRegisterBtn } = useGlobalContext()
-
+    const pathname = usePathname();
     const dispatch = useDispatch();
 
-    const { User, loading } = useSelector((state) => ({ ...state.User }))
+    const { showAuth, setShowAuth, createPostbtn, setCreatePostBtn, Loginbtn, setLoginBtn, Registerbtn, setRegisterBtn } = useGlobalContext()
+    const { User } = useSelector(selectProcessedUsers)
+
 
 
     if (typeof window !== "undefined") {
@@ -38,14 +40,15 @@ const Navbar = () => {
         }
     }, [User])
 
+
     useEffect(() => {
         dispatch(fetchUser())
         dispatch(userSuggested())
         dispatch(GetPosts())
     }, [])
-    useEffect(() => {
-        dispatch(GetPosts())
-    }, [])
+
+
+
     return (
         <>
             <nav className="dark-shadow w-full rounded-lg sticky top-0 z-10 backdrop-blur bg-background/50 bg-light-component dark:bg-dark-component">

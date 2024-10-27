@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import { useGlobalContext } from '../Context/ContextProvider';
 import UserProfileInfo from './userProfileInfo';
-
+import { selectProcessedSuggestedUsers, selectProcessedUsers } from '../Redux/selector';
 
 const bannerImg = "https://t3.ftcdn.net/jpg/05/35/35/38/360_F_535353834_fAKyu7nTpbpNux5XdR5T63OUJ6gDOHlD.jpg"
 const addvertisementImg = "https://indianmediastudies.com/wp-content/uploads/2023/11/what-is-advertising-copy.jpeg.webp"
@@ -25,8 +25,8 @@ const listStyle = "flex items-center justify-between bg-lightbg rounded-lg dark:
 
 const LeftSideBar = () => {
     const { showAuth } = useGlobalContext()
-    const { User, loading } = useSelector((state) => ({ ...state.User }))
-    const { suggestedUsers } = useSelector((state) => (state?.suggestedUsers))
+    const { User, loading } = useSelector(selectProcessedUsers)
+    const { suggestedUsers } = useSelector(selectProcessedSuggestedUsers)
 
     const UserFullName = User?.firstName + " " + User?.lastName
     const followings = User?.followings
@@ -103,7 +103,7 @@ const LeftSideBar = () => {
                             const isFollowing = followings?.includes(userDetails?._id) || (User?._id == userDetails?._id)
 
                             const userDetail = {
-                                profilePic: userDetails?.profilePic?.file,
+                                profilePic: userDetails?.profilePic,
                                 isFollowing,
                                 _id: userDetails?._id,
                                 username: userDetails?.username,

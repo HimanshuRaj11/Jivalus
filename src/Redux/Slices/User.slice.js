@@ -20,12 +20,12 @@ export const UserSlice = createSlice({
             })
             .addCase(fetchUser.fulfilled, (state, action) => {
                 state.loading = false;
-                state.User = action.payload.user;
-                state.message = action.payload.message;
+                state.User = action?.payload?.user;
+                state.message = action.payload?.message;
             })
             .addCase(fetchUser.rejected, (state, action) => {
                 state.loading = false;
-                state.message = action.payload
+                state.message = action?.payload
                 state.error = true
             })
             .addCase(logoutUser.pending, (state, action) => {

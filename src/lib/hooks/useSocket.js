@@ -1,3 +1,4 @@
+"use client"
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
@@ -15,6 +16,7 @@ const useSocket = () => {
             socketIo.disconnect();
         };
     }, []);
+    // console.log(socket);
 
     return socket;
 };

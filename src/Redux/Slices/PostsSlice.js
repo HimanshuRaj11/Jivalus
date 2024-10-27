@@ -21,7 +21,7 @@ export const PostsSlice = createSlice({
                 state.loading = true;
             })
             .addCase(GetPosts.fulfilled, (state, action) => {
-                state.Posts = action.payload.Posts;
+                state.Posts = action?.payload?.Posts;
                 state.loading = false;
             })
             .addCase(GetPosts.rejected, (state, action) => {

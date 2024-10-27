@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 // import { cookies } from 'next/headers'
 
 import { usePathname } from 'next/navigation'
+import { selectProcessedUsers } from '../Redux/selector';
 
 
 const listClasses = "transition-all duration-300 mb-2 px-4 py-1 rounded flex items-center cursor-pointer hover:bg-lightbg dark:hover:bg-darkbg";
@@ -62,7 +63,7 @@ function RightSideBar() {
     const router = useRouter();
     const pathname = usePathname()
 
-    const { User } = useSelector((state) => ({ ...state.User }))
+    const { User, loading } = useSelector(selectProcessedUsers)
     const { showAuth, setLoginBtn } = useGlobalContext()
 
 
